@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotParking</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/login_cadastro.css">
+</head>
+
+<body>
+    <main>
+        <img src="../assets/LogoSpot.png" id="logo">
+        <div id="containerForm">
+            <div id="containerControlForm">
+                <div id="containerSubControlForm">
+                    <div class="controlFormdiv" id="ControlLogin">Login</div>
+                    <div class="controlFormdiv" id="ControlCadastro">Cadastro</div>
+                </div>
+            </div>
+            <form id="formLogin">
+                <div class="containerInputLogin">
+                    <label for="inputEmail" class="labelInput">Email:</label>
+                    <input id="inputEmail" class="inputStyle" type="text" placeholder="email@email.com">
+                </div>
+                <div class="containerInputLogin">
+                    <label for="inputSenha" class="labelInput">Senha:</label>
+                    <input id="inputSenha" class="inputStyle" type="password" placeholder="Digite sua senha">
+                </div>
+                <button id="btnEntrar">Entrar</button>
+                <span><a id="EsqSenha" href="#">Esqueceu a senha?</a></span>
+            </form>
+        </div>
+        <span id="spanCopy">© 2025 SpotParking. Todos os direitos reservados.</span>
+    </main>
+</body>
+
+</html>
