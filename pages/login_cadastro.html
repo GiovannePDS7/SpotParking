@@ -16,7 +16,7 @@
 
 <body>
     <main>
-        <img src="../assets/LogoSpot.png" id="logo">
+        <a href="../index.html"><img src="../assets/LogoSpot.png" id="logo"></a>
         <div id="containerForm">
             <div id="containerControlForm">
                 <div id="containerSubControlForm">
@@ -24,21 +24,42 @@
                     <div class="controlFormdiv" id="ControlCadastro">Cadastro</div>
                 </div>
             </div>
-            <form id="formLogin">
+            <form id="formLogin" method="get" >
                 <div class="containerInputLogin">
                     <label for="inputEmail" class="labelInput">Email:</label>
-                    <input id="inputEmail" class="inputStyle" type="text" placeholder="email@email.com">
+                    <input id="inputEmail" class="inputStyle" type="email" placeholder="email@email.com">
                 </div>
                 <div class="containerInputLogin">
                     <label for="inputSenha" class="labelInput">Senha:</label>
                     <input id="inputSenha" class="inputStyle" type="password" placeholder="Digite sua senha">
                 </div>
-                <button id="btnEntrar">Entrar</button>
+                <button class="btnForm" id="btnEntrar">Entrar</button>
                 <span><a id="EsqSenha" href="#">Esqueceu a senha?</a></span>
+            </form>
+
+            <form id="formCadastro" class="d-none" method="post">
+                <div class="containerInputCadastro">
+                    <label for="inputNome" class="labelInput">Nome:</label>
+                    <input id="inputNome" class="inputStyle" type="text" placeholder="Digite seu nome completo">
+                </div>
+                <div class="containerInputCadastro">
+                    <label for="inputEmailCadastro" class="labelInput">Email:</label>
+                    <input id="inputEmailCadastro" class="inputStyle" type="email" placeholder="Digite seu email">
+                </div>
+                <div class="containerInputCadastro">
+                    <label for="inputSenha" class="labelInput">Senha:</label>
+                    <input id="inputSenha" class="inputStyle" type="password" placeholder="Digite sua senha">
+                </div>
+                <div class="containerInputCadastro">
+                    <label for="inputConfirmarSenha" class="labelInput">Confirme sua senha:</label>
+                    <input id="inputConfirmarSenha" class="inputStyle" type="password" placeholder="Repita sua senha">
+                </div>
+                <button class="btnForm" id="btnCadastrar">Cadastrar</button>
             </form>
         </div>
         <span id="spanCopy">© 2025 SpotParking. Todos os direitos reservados.</span>
     </main>
+    <script src="../scripts/login_cadastro.js"></script>
 </body>
 
 </html>

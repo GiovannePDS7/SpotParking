@@ -18,7 +18,6 @@ main {
 
 #containerForm {
     border-radius: 8px;
-    height: 72%;
     width: 38%;
     border: 1px solid;
     padding: 2vw 0;
@@ -36,7 +35,7 @@ main {
 }
 
 #containerControlForm {
-    height: 10%;
+    height: 6vh;
     width: 100%;
     display: flex;
     align-items: center;
@@ -62,18 +61,22 @@ main {
     background: #2E2F2F;
 }
 
-#formLogin {
+#formLogin, #formCadastro {
     width: 100%;
-    height: 100%;
+    height: 50vh;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: column;
 }
 
+#formCadastro{
+    height: 60vh;
+}
+
 .labelInput, .inputStyle {
     width: 80%;
-    height: 2.5vw;
+    height: 2.1vw;
 }
 
 .labelInput {
@@ -82,7 +85,7 @@ main {
 
 .inputStyle {
     font-weight: 250;
-    font-size: 1.3vw;
+    font-size: 1.2vw;
 }
 
 .inputStyle {
@@ -98,14 +101,14 @@ main {
     background: #141515;
 }
 
-.containerInputLogin {
+.containerInputLogin, .containerInputCadastro {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#btnEntrar {
+.btnForm {
     width: 80%;
     background: #653604;
     color: #fff;
@@ -118,7 +121,7 @@ main {
     border-radius: 5px;
 }
 
-#btnEntrar:hover {
+.btnForm:hover {
     background-color: #4E2B06;
 }
 
@@ -139,4 +142,8 @@ main {
 
 #logo {
     width: 18vw;
+}
+
+.d-none{
+    display: none !important;
 }
