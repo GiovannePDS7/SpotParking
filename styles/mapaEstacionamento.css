@@ -1,0 +1,135 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+    scroll-behavior: smooth;
+    color: #fff;
+}
+
+header {
+    width: 100%;
+    height: 13vh;
+    display: flex;
+    background: #000;
+}
+
+body {
+    background: #000;
+}
+
+
+#logo {
+    width: 15vw;
+}
+
+.container-header {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container-header:nth-child(2) {
+    width: 50%;
+}
+
+
+.container-header:nth-child(1),
+.container-header:nth-child(3) {
+    width: 25%;
+}
+
+#perfilIcon {
+    width: 3.5vw;
+}
+
+#setalIcon {
+    width: 2.3vw;
+    cursor: pointer;
+}
+
+#spanUsuario {
+    color: #fff;
+    padding-right: 1vw;
+    font-size: 1.2vw;
+}
+
+#navHeader {
+    color: #fff;
+    display: flex;
+    list-style: none;
+    width: 80%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.aNavHeader {
+    font-size: 1.2vw;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
+
+.liHeader {
+    transition: 0.15s ease;
+}
+
+.liHeader:hover {
+    color: #d4d0d0;
+}
+
+
+#containerMain {
+    height: 87vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+#mapa {
+    height: 100%;
+    width: 60%;
+    object-fit: contain;
+    margin-top: 2vw;
+}
+
+#h2Titulo {
+    margin-top: 4.5vw;
+    font-size: 1.8vw;
+}
+
+
+footer {
+    height: 20vh;
+    width: 100%;
+    background: #1a1919;
+}
+
+#logoFooter {
+    width: 20%;
+}
+
+#containerFooter {
+    height: 100%;
+}
+
+.conteudofooter {
+    background: #030303;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10vw;
+}
+
+#aFooterImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotParking</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../styles/mapaEstacionamento.css">
+</head>
+
+<body>
+    <header>
+        <div class="container-header">
+            <a href="../index.html"><img src="../assets/LogoSpot.png" id="logo"></a>
+        </div>
+        <div class="container-header">
+            <nav id="navHeader">
+                <a href="./principal.html" class="aNavHeader">
+                    <li class="liHeader">Principal</li>
+                </a>
+                <a href="./dashboard.html" class="aNavHeader">
+                    <li class="liHeader">Dashboard</li>
+                </a>
+                <a href="./calcfinanceira.html" class="aNavHeader">
+                    <li class="liHeader">Calculadora Financeira</li>
+                </a>
+                <a href="./mapaEstacionamento.html" class="aNavHeader">
+                    <li class="liHeader">Mapa</li>
+                </a>
+            </nav>
+        </div>
+        <div class="container-header">
+            <span id="spanUsuario"></span>
+            <img src="../assets/icon/perfil.svg" id="perfilIcon">
+            <img src="../assets/icon/setaPerfil.svg" id="setalIcon">
+        </div>
+    </header>
+
+    <main id="containerMain">
+        <h2 id="h2Titulo">Mapa do Estacionamento</h2>
+        <img src="../assets/mapa.png" id="mapa">
+    </main>
+    <footer>
+        <div id="containerFooter">
+            <div class="conteudofooter"> <a id="aFooterImg" href="../index.html"><img src="../assets/LogoSpot.png"
+                        id="logoFooter"></a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        var nomeUsuario = localStorage.getItem('nome')
+        var emailUsuario = localStorage.getItem('email')
+        var spanUsuario = document.getElementById('spanUsuario');
+
+        spanUsuario.innerHTML = `Seja bem vindo(a) ${nomeUsuario}`
+    </script>
+</body>
+
+</html>

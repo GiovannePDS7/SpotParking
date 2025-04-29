@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotParking</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../styles/calcfinanceira.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container-header">
+            <a href="../index.html"><img src="../assets/LogoSpot.png" id="logo"></a>
+        </div>
+        <div class="container-header">
+            <nav id="navHeader">
+                <a href="./principal.html" class="aNavHeader">
+                    <li class="liHeader">Principal</li>
+                </a>
+                <a href="./dashboard.html" class="aNavHeader">
+                    <li class="liHeader">Dashboard</li>
+                </a>
+                <a href="./calcfinanceira.html" class="aNavHeader">
+                    <li class="liHeader">Calculadora Financeira</li>
+                </a>
+                <a href="./mapaEstacionamento.html" class="aNavHeader">
+                    <li class="liHeader">Mapa</li>
+                </a>
+            </nav>
+        </div>
+        <div class="container-header">
+            <span id="spanUsuario"></span>
+            <img src="../assets/icon/perfil.svg" id="perfilIcon">
+            <img src="../assets/icon/setaPerfil.svg" id="setalIcon">
+        </div>
+    </header>
+    <main id="containerMain">
+        <h2 id="h2Titulo">Veja seus possiveis ganhos!</h2>
+        <div id="containerDados">
+            <div id="containerInsercao">
+                <div id="containerInput">
+                    <label class="lbInput">Quantidade de vagas no seu estacionamento:</label>
+                    <input type="text" class="inputStyle" id="ipt_qntvagas" placeholder="Informe a quantidade">
+                    <label class="lbInput">Valor medio de lucro diario:</label>
+                    <input type="number" class="inputStyle" id="ipt_lucrodiario" placeholder="R$">
+                </div>
+                <button id="btnAnalisar" onclick="bt()">Analisar!</button>
+            </div>
+        </div>
+    </main>
+    <div id="containerExibicao">
+        <div id="divtxt" style=" font-family: Inter, sans-serif;"></div>
+    </div>
+    <footer>
+        <div id="containerFooter">
+            <div class="conteudofooter"> <a id="aFooterImg" href="../index.html"><img src="../assets/LogoSpot.png"
+                        id="logoFooter"></a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script>
+    var nomeUsuario = localStorage.getItem('nome')
+    var emailUsuario = localStorage.getItem('email')
+    var spanUsuario = document.getElementById('spanUsuario');
+
+    spanUsuario.innerHTML = `Seja bem vindo(a) ${nomeUsuario}`
+
+    function bt() {
+
+        if (ipt_lucrodiario.value != '' && ipt_qntvagas.value != '') {
+
+            var lucro = Number(ipt_lucrodiario.value) / Number(ipt_qntvagas.value);
+            divtxt.innerHTML = `
+    <p>A média de lucro gerado por <b>cada vaga</b> no seu estacionamento é de aproximadamente <b>R$ ${lucro.toFixed(0)}</b> por dia.</p>
+
+    <p>No entanto, sabemos que nem todas as vagas estão ocupadas o tempo todo. Isso significa que, mesmo com estrutura disponível, você está deixando de lucrar — <b>vagas livres são espaço não aproveitado</b>.</p>
+
+    <p>Com o <b>SpotParking</b>, você não apenas monitora a ocupação em tempo real, como também pode identificar vagas constantemente ociosas e transformá-las em fontes de receita.</p>
+
+    <p>Exemplo: em um estacionamento de shopping, um <b>lava-rápido completo</b> pode ser implementado utilizando o espaço de apenas <b>10 vagas</b>. Atendendo 4 carros por hora a um valor médio de R$ 60 por serviço, ele pode faturar até <b>R$ 1.920 por dia</b> — o que representa até <b>R$ 60 mil por mês</b> em receita potencial.</p>
+
+    <p>Ou seja, com planejamento inteligente e o apoio do <b>SpotParking</b>, é possível transformar <b>vagas vazias em lucro real</b> — sem comprometer a operação principal do estacionamento.</p>
+    `;
+        } else {
+            alert('Preencha os dados!')
+        }
+
+
+    }
+
+
+
+
+
+</script>
