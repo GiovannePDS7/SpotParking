@@ -1,0 +1,181 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 13vh;
+    display: flex;
+    transition: 0.5s ease;
+    background: #000;
+}
+
+#logo {
+    width: 15vw;
+}
+
+.container-header {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container-header:nth-child(2) {
+    width: 50%;
+}
+
+
+.container-header:nth-child(1),
+.container-header:nth-child(3) {
+    width: 25%;
+}
+
+#perfilIcon {
+    width: 3.5vw;
+}
+
+#setalIcon {
+    width: 2.3vw;
+    cursor: pointer;
+}
+
+#spanUsuario {
+    color: #fff;
+    padding-right: 1vw;
+    font-size: 1.2vw;
+}
+
+#containerMain {
+    height: 87vh;
+    width: 100%;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#containerCards {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 80%;
+    height: 90%;
+}
+
+.cards {
+    width: 30%;
+    height: 80%;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    padding: 0.65vw;
+    transition: 0.3s ease;
+}
+
+.cards:hover {
+    background: #1b0f02;
+    transform: scale(1.02);
+}
+
+.cards:hover .btnCard {
+    border: 1px solid #000 !important;
+}
+
+.cards:hover .spanTxtCard {
+    border-bottom: 1.2px solid #ffffff;
+}
+
+.containerTxtcard {
+    height: 20%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spanTxtCard {
+    font-weight: 100;
+    text-align: center;
+    color: #fff;
+    font-size: 1.9vw;
+    width: 90%;
+}
+
+.descCard {
+    height: 55%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+
+}
+
+.containerBtnCard {
+    height: 25%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.p-card {
+    width: 90%;
+    font-weight: 100;
+    color: #d4d0d0;
+    text-align: center;
+    font-size: 1.35vw;
+}
+
+.aBtnCard {
+    font-size: 2vw;
+    text-decoration: none;
+}
+
+.btnCard {
+    cursor: pointer;
+    color: #fff;
+    width: 9vw;
+    height: 3vw;
+    border: none;
+    background-color: #4E2B06;
+    transition: 0.3s ease;
+}
+
+.btnCard:hover {
+    background-color: #442504;
+}
+
+
+footer {
+    height: 20vh;
+    width: 100%;
+    background: #1a1919;
+}
+
+#logoFooter {
+    width: 20%;
+}
+
+#containerFooter {
+    height: 100%;
+}
+
+.conteudofooter {
+    background: #030303;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#aFooterImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

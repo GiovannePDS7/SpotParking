@@ -1,0 +1,213 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+    scroll-behavior: smooth;
+    color: #fff;
+}
+
+header {
+    width: 100%;
+    height: 13vh;
+    display: flex;
+    background: #000;
+}
+
+body {
+    background: #000;
+}
+
+
+#logo {
+    width: 15vw;
+}
+
+.container-header {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container-header:nth-child(2) {
+    width: 50%;
+}
+
+
+.container-header:nth-child(1),
+.container-header:nth-child(3) {
+    width: 25%;
+}
+
+#perfilIcon {
+    width: 3.5vw;
+}
+
+#setalIcon {
+    width: 2.3vw;
+    cursor: pointer;
+}
+
+#spanUsuario {
+    color: #fff;
+    padding-right: 1vw;
+    font-size: 1.2vw;
+}
+
+#navHeader {
+    color: #fff;
+    display: flex;
+    list-style: none;
+    width: 80%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.aNavHeader {
+    font-size: 1.2vw;
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
+
+.liHeader {
+    transition: 0.15s ease;
+}
+
+.liHeader:hover {
+    color: #d4d0d0;
+}
+
+/**/
+
+#containerMain {
+    height: 70vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#h2Titulo {
+    text-align: center;
+    padding-top: 2vw;
+    font-size: 2vw;
+    font-weight: 400;
+}
+
+#containerDados {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#containerInsercao {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#containerInput {
+    width: 50%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+}
+
+.lbInput {
+    margin-top: 1.3vw;
+    width: 80%;
+    font-size: 1.3vw;
+}
+
+.inputStyle {
+    width: 80%;
+    height: 2.1vw;
+}
+
+
+.inputStyle {
+    font-weight: 250;
+    font-size: 1.2vw;
+}
+
+.inputStyle {
+    background: #232424;
+    border: none;
+    padding-left: 0.6vw;
+}
+
+.inputStyle:focus {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    background: #141515;
+}
+
+#btnAnalisar {
+    border: none;
+    background-color: #4E2B06;
+    width: 15vw;
+    height: 2.5vw;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 1.2vw;
+}
+
+#btnAnalisar:hover {
+    background-color: #442504;
+    border-radius: 7px;
+}
+
+#containerExibicao {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#divtxt {
+    width: 80%;
+    line-height: 1.5vw;
+    font-size: 1.15vw;
+    padding-bottom: 1.5vw;
+}
+
+
+footer {
+    height: 20vh;
+    width: 100%;
+    background: #1a1919;
+}
+
+#logoFooter {
+    width: 20%;
+}
+
+#containerFooter {
+    height: 100%;
+}
+
+.conteudofooter {
+    background: #030303;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#aFooterImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
