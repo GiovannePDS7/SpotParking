@@ -38,7 +38,7 @@ function ValidarLogin() {
     var ipt_senha = document.getElementById('inputSenha').value;
 
     for (let index = 0; index >= tentativas; index++) {
-        EsqSenha.innerHTML = 'Esqueceu a senha?'
+        EsqSenha.innerHTML = '<b>Esqueceu a senha?</b>'
         break
     }
 
