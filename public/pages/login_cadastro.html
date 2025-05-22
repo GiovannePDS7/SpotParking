@@ -13,7 +13,7 @@
         rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="../styles/login_cadastro.css">
 </head>
 
@@ -27,7 +27,7 @@
                     <div class="controlFormdiv" id="ControlCadastro">Cadastro</div>
                 </div>
             </div>
-            <div id="formLogin" >
+            <div id="formLogin">
                 <div class="containerInputLogin">
                     <label for="inputEmail" class="labelInput">Email:</label>
                     <input id="inputEmail" class="inputStyle" type="email" placeholder="email@email.com">
@@ -36,18 +36,20 @@
                     <label for="inputSenha" class="labelInput">Senha:</label>
                     <input id="inputSenha" class="inputStyle" type="password" placeholder="Digite sua senha">
                 </div>
-                <button class="btnForm" id="btnEntrar" onclick="ValidarLogin()">Entrar</button>
+                <button class="btnForm" id="btnEntrar" onclick="Entrar()">Entrar</button>
                 <span><a id="EsqSenha" href="#"></a></span>
             </div>
 
             <div id="formCadastro" class="d-none" method="post">
                 <div class="containerInputCadastro">
                     <label for="inputNome" class="labelInput">Nome:</label>
-                    <input id="inputNome" maxlength="45" class="inputStyle" type="text" placeholder="Digite seu nome completo">
+                    <input id="inputNome" maxlength="45" class="inputStyle" type="text"
+                        placeholder="Digite seu nome completo">
                 </div>
                 <div class="containerInputCadastro">
                     <label for="inputEmailCadastro" class="labelInput">Email:</label>
-                    <input id="inputEmailCadastro" maxlength="30" class="inputStyle" type="email" placeholder="Digite seu email">
+                    <input id="inputEmailCadastro" maxlength="30" class="inputStyle" type="email"
+                        placeholder="Digite seu email">
                 </div>
                 <div class="containerInputCadastro">
                     <label for="inputSenhaCadastro" class="labelInput">Senha:</label>
@@ -57,7 +59,7 @@
                     <label for="inputConfirmarSenha" class="labelInput">Confirme sua senha:</label>
                     <input id="inputConfirmarSenha" class="inputStyle" type="password" placeholder="Repita sua senha">
                 </div>
-                <button class="btnForm" id="btnCadastrar" onclick="CadastrarUsuario()">Cadastrar</button>
+                <button class="btnForm" id="btnCadastrar" onclick="Cadastrar()">Cadastrar</button>
             </div>
         </div>
         <span id="spanCopy">© 2025 SpotParking. Todos os direitos reservados.</span>
@@ -112,7 +114,7 @@
                     if (resposta.ok) { //Status == 200 'ok'
                         alert('Cadastro efetuado');
 
-                        window.location = "../../Pages/Login/login.html";
+                        window.location = "../pages/login_cadastro.html";
 
 
                     } else {
@@ -124,6 +126,58 @@
                 .catch(function (resposta) {
                     console.log(`#ERRO: ${resposta}`);
                 });
+
+            return false;
+        }
+        function Entrar() {
+            var emailVar = inputEmail.value;
+            var senhaVar = inputSenha.value;
+
+            if (emailVar == "" || senhaVar == "") {
+                alert('Preencha os dados')
+                return false;
+            }
+
+            fetch("/usuarios/autenticar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailServer: emailVar,
+                    senhaServer: senhaVar
+                })
+            }).then(function (resposta) {
+                console.log("ESTOU NO THEN DO entrar()!")
+
+                if (resposta.ok) {
+                    console.log(resposta);
+
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+                        sessionStorage.EMAIL_USUARIO = json.email;
+                        sessionStorage.NOME_USUARIO = json.nome;
+                        sessionStorage.ID_USUARIO = json.id;
+
+                        window.location = "../pages/principal.html";
+
+
+                    });
+
+                } else {
+                    alert('Login inválido');
+                    console.log("Houve um erro ao tentar realizar o login!");
+
+                    resposta.text().then(texto => {
+                        console.error(texto);
+
+                    });
+                }
+
+            }).catch(function (erro) {
+                console.log(erro);
+            })
 
             return false;
         }

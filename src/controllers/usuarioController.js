@@ -60,6 +60,7 @@ function cadastrar(req, res) {
             .then(
                 function (resultado) {
                     res.json(resultado);
+                    console.log(resultado);
                 }
             ).catch(
                 function (erro) {

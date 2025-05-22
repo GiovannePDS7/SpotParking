@@ -9,7 +9,7 @@ CREATE TABLE Usuario (
 	nome VARCHAR(45) NOT NULL,
 	email VARCHAR(30) NOT NULL,
 	senha VARCHAR(255) NOT NULL,
-	funcao VARCHAR(30) NOT NULL
+	funcao VARCHAR(30) 
 );
 
 CREATE TABLE Shopping (
