@@ -10,7 +10,7 @@ CREATE TABLE Usuario (
 	email VARCHAR(30) NOT NULL,
 	senha VARCHAR(255) NOT NULL,
 	funcao VARCHAR(30) NOT NULL
-);
+); 
 
 CREATE TABLE Shopping (
 	idShopping INT PRIMARY KEY AUTO_INCREMENT,
