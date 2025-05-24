@@ -37,7 +37,7 @@
                     <input id="inputSenha" class="inputStyle" type="password" placeholder="Digite sua senha">
                 </div>
                 <button class="btnForm" id="btnEntrar" onclick="Entrar()">Entrar</button>
-                <span><a id="EsqSenha" href="#"></a></span>
+                <span><a id="EsqSenha" href="#">Esqueceu a senha?</a></span>
             </div>
 
             <div id="formCadastro" class="d-none" method="post">
@@ -132,7 +132,9 @@
         function Entrar() {
             var emailVar = inputEmail.value;
             var senhaVar = inputSenha.value;
-
+         for (let index = 1; index < 2 ; index++) {
+                    EsqSenha.innerHTML = '<b>Esqueceu a senha?</b>'
+         }
             if (emailVar == "" || senhaVar == "") {
                 alert('Preencha os dados')
                 return false;
