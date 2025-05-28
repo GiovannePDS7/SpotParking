@@ -12,12 +12,16 @@
         rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="../styles/principal.css">
-    <script src="../js/sessao.js"></script>
 </head>
 
 <body onload="validarSessao()">
+    <div id="containerFerramentas">
+        <div id="containerSair">
+            <button id="btnSair" onclick="limparSessao()">Sair</button>
+        </div>
+    </div> 
     <header>
         <div class="container-header">
             <a href="../index.html"><img src="../assets/LogoSpot.png" id="logo"></a>
@@ -83,6 +87,7 @@
         </div>
     </footer>
     <script src="../scripts/principal.js"></script>
+    <script src="../js/sessao.js"></script>
 </body>
 
 </html>
