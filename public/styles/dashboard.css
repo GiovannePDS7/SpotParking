@@ -21,9 +21,11 @@ body {
     width: 80%;
     display: flex;
     justify-content: space-between;
+    margin-top: 2%;
 }
 
-#containerLeft, #containerRight {
+#containerLeft,
+#containerRight {
     width: 49.4%;
     height: 100%;
 }
@@ -116,21 +118,75 @@ body {
     width: 2vw;
 }
 
-#SelectSensor {
-    all: unset;
-    font-size: 1.1vw;
-    width: 10%;
-    top: 25.7%;
-    right: 0%;
-    position: absolute;
+#containerCanvasRight {
+    flex-direction: row;
+}
+
+#containerDash {
+    width: 92%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#tituloDash {
+    margin-top: 3.5%;
+    font-size: 2.5vw;
+    color: #fff;
+}
+
+#containerSelectKPI,
+#containerSelectSensor {
     background: #0f1114;
+    position: absolute;
+    width: 12vw;
+    height:18.5vh;
+    left: 87%;
+    top: 14%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+#containerSelectSensor {
+    top: 38%;
+    height: 25vh;
+
+}
+
+.selects {
+    all: unset;
+    font-size: 1vw;
+    padding-left: 2%;
+    height: 3vh;
+    display: flex;
+    align-items: center;
+    color: #000;
+    background: #d17711;
+    width: 90%;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+#SelectPiso,
+#SelectPosicao,
+#SelectSemana {
     background-image: url('../assets/icon/setaBaixo.png');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 15px;
 }
 
-#containerCanvasRight {
-    flex-direction: row;
-    border-top-right-radius: 0px;
+.optSelect,
+.selects {
+    color: #000;
+    font-weight: 600;
+}
+
+.spanContainerSelect {
+    text-align: center;
+    font-size: 1vw;
 }

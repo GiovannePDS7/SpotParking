@@ -22,89 +22,284 @@
     <div id="containerSeta">
         <a href="./principal.html"><img src="../assets/icon/setaEsquerda.png" id="SetaVoltar"></a>
     </div>
-    <main id="containerMain">
-        <select name="" id="SelectSensor">
-            <option value="sensor 1">Sensor 1</option>
-            <option value="sensor 2">Sensor 2</option>
-            <option value="sensor 3">Sensor 3</option>
-        </select>
-        <div id="containerLeft">
-            <div class="containerKPI">
-                <div class="KPI">
-                    <span class="titleKPI">Maior fluxo de veículos na semana atual</span>
-                    <span class="KPIvalue">350</span>
-                </div>
-                <div class="KPI">
-                    <span class="titleKPI">Menor fluxo de veículos na semana atual</span>
-                    <span class="KPIvalue">80</span>
-                </div>
+    <div id="containerDash">
+        <h2 id="tituloDash">Painel de Gestão do Estacionamento</h2>
+        <main id="containerMain">
+            <div id="containerSelectSensor">
+                <span class="spanContainerSelect">Escolha a vaga que deseja visualizar os dados do sensor</span>
+                <!-- <select id="SelectSensor" class="selects">
+                    <option class="optSelect" value="sensor 1">Sensor 1</option>
+                    <option class="optSelect" value="sensor 2">Sensor 2</option>
+                    <option class="optSelect" value="sensor 3">Sensor 3</option>
+                </select> -->
+                <select id="SelectPiso" class="selects">
+                    <option class="optSelect" value="P01">Piso 1</option>
+                    <option class="optSelect" value="P02">Piso 2</option>
+                    <option class="optSelect" value="P03">Piso 3</option>
+                </select>
+                <select id="SelectPosicao" class="selects">
+                    <option class="optSelect" value="A01">A01</option>
+                    <option class="optSelect" value="A02">A02</option>
+                    <option class="optSelect" value="A03">A03</option>
+                </select>
             </div>
-            <div class="containerGrafico">
-                <div class="containerCanvas">
-                    <span class="titleGrafico">Ocupação de vagas por horário</span>
-                    <div class="grafico">
-                        <canvas id="Ocupacao_PHorario"></canvas>
-                    </div>
-                </div>
-                <div class="containerCanvas">
-                    <span class="titleGrafico">Total de vagas ocupadas e disponíveis por horário</span>
-                    <div class="grafico">
-                        <canvas id="Total_Ocup_Disp"></canvas>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-        <div id="containerRight">
-            <div class="containerKPI">
-                <div class="KPI">
-                    <span class="titleKPI">Horário com maior ocupação</span>
-                    <span class="KPIvalue">12:00</span>
+            <div id="containerLeft">
+                <div class="containerKPI">
+                    <div class="KPI">
+                        <span class="titleKPI" id="kpi1">Horário com maior ocupação</span>
+                        <span class="KPIvalue">12:00</span>
+                    </div>
+                    <div class="KPI">
+                        <span class="titleKPI" id="kpi2">Horário com menor ocupação</span>
+                        <span class="KPIvalue">09:00</span>
+                    </div>
+
                 </div>
-                <div class="KPI">
-                    <span class="titleKPI">Horário com menor ocupação</span>
-                    <span class="KPIvalue">09:00</span>
-                </div>
-            </div>
-            <div class="containerGrafico">
-                <div class="containerCanvas" id="containerCanvasRight">
-                    <div class="containerSubCanvas" id="containerSubCanvas">
-                        <span class="titleGrafico" id="spanSensorEspecifico">Horário que o sensor 1 ficou ocupado</span>
+                <div class="containerGrafico">
+                    <div class="containerCanvas">
+                        <span class="titleGrafico">Ocupação de vagas por horário</span>
                         <div class="grafico">
-                            <canvas id="SensorEspecifico"></canvas>
+                            <canvas id="Ocupacao_PHorario"></canvas>
                         </div>
                     </div>
-                    <div class="containerSubCanvas">
+                    <div class="containerCanvas">
+                        <span class="titleGrafico">Total de vagas ocupadas e disponíveis por horário</span>
                         <div class="grafico">
-                            <canvas id="OcupAtual_Dispon"></canvas>
+                            <canvas id="Total_Ocup_Disp"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="containerCanvas">
-                    <span class="titleGrafico">Fluxo total de veículos na semana</span>
-                    <div class="grafico">
-                        <canvas id="fluxoTotal"></canvas>
+            </div>
+            <div id="containerRight">
+                <div class="containerKPI">
+                    <div id="containerSelectKPI">
+                        <span class="spanContainerSelect">Escolha o mês</span>
+                        <select id="SelectMes" class="selects"></select>
+                        <span class="spanContainerSelect">Escolha a semana</span>
+                        <select id="SelectSemana" class="selects">
+                            <option class="optSelect" value="1">Primeira semana</option>
+                            <option class="optSelect" value="2">Segunda semana</option>
+                            <option class="optSelect" value="3">Terceira semana</option>
+                            <option class="optSelect" value="4">Quarta semana</option>
+                        </select>
+                    </div>
+                    <div class="KPI">
+                        <span class="titleKPI" id="kpi3">Maior fluxo de veículos na semana atual</span>
+                        <span class="KPIvalue">350</span>
+                    </div>
+                    <div class="KPI">
+                        <span class="titleKPI" id="kpi4">Menor fluxo de veículos na semana atual</span>
+                        <span class="KPIvalue">80</span>
                     </div>
                 </div>
+                <div class="containerGrafico">
+                    <div class="containerCanvas" id="containerCanvasRight">
+                        <div class="containerSubCanvas" id="containerSubCanvas">
+                            <span class="titleGrafico" id="spanSensorEspecifico">Horário que o sensor 1 ficou
+                                ocupado</span>
+                            <div class="grafico">
+                                <canvas id="SensorEspecifico"></canvas>
+                            </div>
+                        </div>
+                        <div class="containerSubCanvas">
+                            <div class="grafico">
+                                <canvas id="OcupAtual_Dispon"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="containerCanvas">
+                        <span class="titleGrafico">Fluxo total de veículos na semana</span>
+                        <div class="grafico">
+                            <canvas id="fluxoTotal"></canvas>
+                        </div>
+                    </div>
 
+                </div>
             </div>
-        </div>
-    </main>
-
+        </main>
+    </div>
     <script>
 
-        var selectSensor = document.getElementById("SelectSensor")
-        const dadosSensores = {
-            "sensor 1": [0, 0, 0, 0, 1, 1],
-            "sensor 2": [1, 0, 0, 1, 1, 0],
-            "sensor 3": [1, 1, 1, 0, 0, 1]
-        };
+        const SelectSemana = document.getElementById('SelectSemana');
+        const hoje = new Date();
+        let optionsHTML = '';
+        let dataOpt = '';
+        var texto = ''
+        const data = new Date();
 
-        selectSensor.addEventListener("change", function () {
-            const valorSelect = selectSensor.value;
-            sensoresEspecificos.data.datasets[0].data = dadosSensores[valorSelect];
-            spanSensorEspecifico.innerHTML = `Horário que o ${valorSelect} ficou ocupado`
-            sensoresEspecificos.update();
+        for (let i = 0; i < 12; i++) {
+            let ano = data.getFullYear();
+            let mes = data.getMonth() - i + 1;
+
+            if (mes <= 0) {
+                mes += 12;
+                ano -= 1;
+            }
+            if (String(mes).length == 1) {
+                mes = `0${mes}`
+            }
+            dataOpt = `${ano}-${mes}-01`
+
+            console.log(mes)
+            switch (String(mes)) {
+                case '01':
+                    texto = `Janeiro de ${ano}`
+                    break;
+                
+                case '02':
+                    texto = `Fevereiro de ${ano}`
+                    break;
+                
+                case '03':
+                    texto = `Março de ${ano}`
+                    break;
+                
+                case '04':
+                    texto = `Abril de ${ano}`
+                    break;
+                
+                case '05':
+                    texto = `Maio de ${ano}`
+                    break;
+                
+                case '06':
+                    texto = `Junho de ${ano}`
+                    break;
+                
+                case '07':
+                    texto = `Julho de ${ano}`
+                    break;
+                
+                case '08':
+                    texto = `Agosto de ${ano}`
+                    break;
+                
+                case '09':
+                    texto = `Setembro de ${ano}`
+                    break;
+                
+                case '10':
+                    texto = `Outubro de ${ano}`
+                    break;
+                
+                case '11':
+                    texto = `Novembro de ${ano}`
+                    break;
+                
+                case '12':
+                    texto = `Dezembro de ${ano}`
+                    break;
+            }
+            optionsHTML += `<option class="optSelect" value="${dataOpt}">${texto}</option>`;
+        }
+
+        SelectSemana.innerHTML = optionsHTML;
+
+
+        SelectSemana.innerHTML = optionsHTML;
+
+
+        var kpi3 = document.getElementById('kpi3')
+        var kpi4 = document.getElementById('kpi4')
+        SelectSemana.addEventListener('change', function () {
+            switch (SelectSemana.value) {
+                case '1':
+                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
+                    kpi4.innerHTML = `Menor fluxo de veiculos na última semana`;
+                    break;
+                case '2':
+                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 2 semanas`;
+                    kpi4.innerHTML = `Menor fluxo de veiculos nas últimas 2 semanas`;
+                    break;
+                case '4':
+                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 4 semanas`;
+                    kpi4.innerHTML = `Menor fluxo de veiculos nas últimas 4 semanas`;
+                    break;
+                default:
+                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
+                    kpi4.innerHTML = `Menor fluxo de veiculos na última semana`;
+                    break;
+
+            }
+        })
+
+        addEventListener("DOMContentLoaded", function () {
+            ObterDadosKPI3();
+        });
+
+        function ObterDadosKPI3() {
+            var SelectSemana = document.getElementById('SelectSemana');
+            var SelectMes = document.getElementById('SelectMes');
+
+            fetch("/dashboard/ObterDadosKPI3", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    selectSemanaServer: SelectSemana.value,
+                    selectMesServer: SelectMes.value,
+                }),
+            })
+                .then(async function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) { //Status == 200 'ok'
+                        alert('Cadastro efetuado');
+
+                        window.location = "../pages/login_cadastro.html";
+
+
+                    } else {
+                        var erroDaController = await resposta.json(); //Recebe qualquer erro marcado da controller
+                        console.log('Erro ao cadastrar')
+                        alert('Erro ao cadastrar: ' + erroDaController.erroEmail) //Se fosse outro erro sem ser de email acredito que daria um alert inconsistente
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+
+        // var selectSensor = document.getElementById("SelectSensor")
+        var SelectPiso = document.getElementById("SelectPiso")
+
+        SelectSemana.addEventListener('change', function () {
+            switch (SelectSemana.value) {
+                case '1':
+                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
+                    break;
+                case '2':
+                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 2 semanas`;
+                    break;
+                case '4':
+                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 4 semanas`;
+                    break;
+                default:
+                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
+                    break;
+
+            }
+        })
+
+        // const dadosSensores = {
+        //     "sensor 1": [0, 0, 0, 0, 1, 1],
+        //     "sensor 2": [1, 0, 0, 1, 1, 0],
+        //     "sensor 3": [1, 1, 1, 0, 0, 1]
+        // };
+
+        // selectSensor.addEventListener("change", function () {
+        //     const valorSelect = selectSensor.value;
+        //     sensoresEspecificos.data.datasets[0].data = dadosSensores[valorSelect];
+        //     spanSensorEspecifico.innerHTML = `Horário que o ${valorSelect} ficou ocupado`
+        //     sensoresEspecificos.update();
+        // })
+
+        SelectPiso.addEventListener("change", function () {
+
+            //    sensoresEspecificos.update();
         })
 
         const Ocupacao_PHorario = document.getElementById('Ocupacao_PHorario');
@@ -185,30 +380,30 @@
         });
 
 
-        const sensoresEspecificos = new Chart(SensorEspecifico, {
-            type: 'line',
-            data: {
-                labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
-                datasets: [{
-                    label: '',
-                    data: dadosSensores["sensor 1"],
-                    borderColor: '#d17711',
-                    backgroundColor: 'transparent',
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    }
-                }
-            }
-        });
+        // const sensoresEspecificos = new Chart(SensorEspecifico, {
+        //     type: 'line',
+        //     data: {
+        //         labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+        //         datasets: [{
+        //             label: '',
+        //             data: dadosSensores["sensor 1"],
+        //             borderColor: '#d17711',
+        //             backgroundColor: 'transparent',
+        //         }]
+        //     },
+        //     options: {
+        //         plugins: {
+        //             legend: {
+        //                 display: false
+        //             }
+        //         },
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true,
+        //             }
+        //         }
+        //     }
+        // });
 
         new Chart(OcupAtual_Dispon, {
             type: 'doughnut',

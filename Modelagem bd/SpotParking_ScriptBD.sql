@@ -68,3 +68,87 @@ CREATE TABLE Log(
     status_vaga VARCHAR(20) NOT NULL,
     dataHora DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
+
+
+select * from Usuario;
+
+-- Inserts
+
+insert into Usuario(nome, email, senha) values('Mario', 'mario@gmail.com', 'mario');
+
+
+insert into Shopping (nomeFantasia, cnpj, cep, rua, bairro, numero, cidade, UF, fkUsuario)
+values ('Shopping Central', '12345678000199', '01001000', 'Rua Principal', 'Centro', '100', 'São Paulo', 'SP', 1);
+
+insert into Estacionamento (capacidade, fkShopping)
+values (100, 1);
+
+insert into Vaga (piso, posicao, fkEstacionamento)
+values ('P1', 'A1', 1);
+
+insert into Sensor (tipo, fkVaga)
+values ('sensor ultrasônico', 1);
+
+
+insert into Demanda_Ocupacional (fkSensor, status_vaga)
+values (1, 'Ocupado'); -- ID será 1
+
+-- Segunda
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 0 DAY);
+
+-- Terça
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 1 DAY);
+
+-- Quarta (3 entradas)
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values 
+(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY),
+(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY + INTERVAL 2 HOUR),
+(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY + INTERVAL 4 HOUR);
+
+-- Quinta (2 entradas)
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values 
+(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 3 DAY),
+(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 3 DAY + INTERVAL 3 HOUR);
+
+-- Sexta
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 4 DAY);
+
+-- Sábado
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 5 DAY);
+
+-- Domingo
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 6 DAY);
+
+
+-- Selects
+
+SET lc_time_names = 'pt_BR';
+
+select * from Log;
+
+select 
+    dayname(l.dataHora) as dia_semana,
+    count(*) as total_entradas
+from Log l
+join Demanda_Ocupacional d on l.fkDemandOcup = d.idDemandOcup and l.fkSensor = d.fkSensor
+join Sensor s on d.fkSensor = s.idSensor
+join Vaga v on s.fkVaga = v.idVaga
+join Estacionamento e on v.fkEstacionamento = e.idEstacionamento
+join Shopping sh on e.fkShopping = sh.idShopping
+join Usuario u on sh.fkUsuario = u.idUsuario
+where 
+    l.status_vaga = 'Ocupado'
+    and l.dataHora between '2025-06-01' and '2025-06-30' -- arrumar aqui
+    and u.idUsuario = 1
+group by dia_semana
+order by total_entradas desc
+limit 1;
+
+
