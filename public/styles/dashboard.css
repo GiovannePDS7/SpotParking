@@ -131,7 +131,7 @@ body {
 }
 
 #tituloDash {
-    margin-top: 3.5%;
+    margin-top: 10%;
     font-size: 2.5vw;
     color: #fff;
 }
@@ -141,9 +141,9 @@ body {
     background: #0f1114;
     position: absolute;
     width: 12vw;
-    height:18.5vh;
+    height:8.5vw;
     left: 87%;
-    top: 14%;
+    top: 15.6%;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -152,8 +152,8 @@ body {
 }
 
 #containerSelectSensor {
-    top: 38%;
-    height: 25vh;
+    top: 43.5%;
+    height: 12.5vw;
 
 }
 
@@ -161,7 +161,7 @@ body {
     all: unset;
     font-size: 1vw;
     padding-left: 2%;
-    height: 3vh;
+    height: 1.55vw;
     display: flex;
     align-items: center;
     color: #000;
