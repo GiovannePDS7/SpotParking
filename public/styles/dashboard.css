@@ -17,7 +17,7 @@ body {
 
 
 #containerMain {
-    height: 90vh;
+    height: 100vh;
     width: 80%;
     display: flex;
     justify-content: space-between;
@@ -57,7 +57,7 @@ body {
 .titleKPI {
     text-align: center;
     width: 90%;
-    font-size: 1.3vw;
+    font-size: 1vw;
 
 }
 
@@ -173,7 +173,8 @@ body {
 
 #SelectPiso,
 #SelectPosicao,
-#SelectSemana {
+#SelectSemana,
+#SelectMes {
     background-image: url('../assets/icon/setaBaixo.png');
     background-repeat: no-repeat;
     background-position: right 10px center;
@@ -188,5 +189,15 @@ body {
 
 .spanContainerSelect {
     text-align: center;
+    font-size: 1vw;
+}
+.containerKPIDados{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 1vh;
+}
+
+.KPIdiaSemana{
     font-size: 1vw;
 }

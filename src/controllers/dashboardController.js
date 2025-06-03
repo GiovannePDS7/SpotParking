@@ -40,28 +40,60 @@ var dashboardModel = require("../models/dashboardModel.js");
 
 // }
 
-function ObterDadosKPI1(req, res) {
-    var selectSemana = req.body.selectServer;
+function ObterDadosKPI3(req, res) {
+    var Semana = req.body.selectSemanaServer;
+    var Periodo = req.body.selectPeriodoServer;
 
-    if (selectSemana == undefined) {
+    if (Semana == undefined) {
         res.status(400).send("Valor do select está undefined!");
+    } else if (Periodo == undefined) {
+        res.status(400).send("Valor do periodo está undefined!");
     } else {
 
-        dashboardModel.ObterDadosKPI1(selectSemana)
+        dashboardModel.ObterDadosKPI3(Periodo, Semana)
             .then(
                 function (resposta) {
                     console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
+
                     res.json({
-                        id: resposta[0].idUsuario,
-                        email: resposta[0].email,
-                        nome: resposta[0].nome,
+                        diaSemana: resposta[0].dia_semana,
+                        totalEntradas: resposta[0].total_entradas,
                     });
 
                 }
             ).catch(
                 function (erro) {
                     console.log(erro);
-                    console.log("\nHouve um erro ao realizar o login! Erro: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+
+}
+function ObterDadosKPI4(req, res) {
+    var Semana = req.body.selectSemanaServer;
+    var Periodo = req.body.selectPeriodoServer;
+
+    if (Semana == undefined) {
+        res.status(400).send("Valor do select está undefined!");
+    } else if (Periodo == undefined) {
+        res.status(400).send("Valor do periodo está undefined!");
+    } else {
+
+        dashboardModel.ObterDadosKPI4(Periodo, Semana)
+            .then(
+                function (resposta) {
+                    console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
+
+                    res.json({
+                        diaSemana: resposta[0].dia_semana,
+                        totalEntradas: resposta[0].total_entradas,
+                    });
+
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
                     res.status(500).json(erro.sqlMessage);
                 }
             );
@@ -71,5 +103,6 @@ function ObterDadosKPI1(req, res) {
 
 
 module.exports = {
-    ObterDadosKPI1
+    ObterDadosKPI3,
+    ObterDadosKPI4
 }

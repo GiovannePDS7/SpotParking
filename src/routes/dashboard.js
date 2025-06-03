@@ -8,7 +8,10 @@ var dashboardController = require("../controllers/dashboardController");
 //     usuarioController.cadastrar(req, res);
 // })
 
-router.post("/ObterDadosKPI1", function (req, res) {
-    dashboardController.ObterDadosKPI1(req, res);
+router.post("/ObterDadosKPI3", function (req, res) {
+    dashboardController.ObterDadosKPI3(req, res);
+})
+router.post("/ObterDadosKPI4", function (req, res) {
+    dashboardController.ObterDadosKPI4(req, res);
 })
 module.exports = router;

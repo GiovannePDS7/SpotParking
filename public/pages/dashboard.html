@@ -85,12 +85,19 @@
                         </select>
                     </div>
                     <div class="KPI">
-                        <span class="titleKPI" id="kpi3">Maior fluxo de veículos na semana atual</span>
-                        <span class="KPIvalue">350</span>
+                        <span class="titleKPI" id="kpi3"></span>
+                        <div class="containerKPIDados">
+                            <span class="KPIvalue" id="kpi3Value"></span>
+                            <span class="KPIdiaSemana" id="KPI3diaSemana"></span>
+                        </div>
                     </div>
                     <div class="KPI">
-                        <span class="titleKPI" id="kpi4">Menor fluxo de veículos na semana atual</span>
-                        <span class="KPIvalue">80</span>
+                        <span class="titleKPI" id="kpi4"></span>
+
+                        <div class="containerKPIDados">
+                            <span class="KPIvalue" id="kpi4Value"></span>
+                            <span class="KPIdiaSemana" id="KPI4diaSemana"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="containerGrafico">
@@ -122,6 +129,9 @@
     <script>
 
         const SelectSemana = document.getElementById('SelectSemana');
+        const SelectMes = document.getElementById('SelectMes');
+
+
         const hoje = new Date();
         let optionsHTML = '';
         let dataOpt = '';
@@ -139,54 +149,53 @@
             if (String(mes).length == 1) {
                 mes = `0${mes}`
             }
-            dataOpt = `${ano}-${mes}-01`
+            dataOpt = `${ano}-${mes}-`
 
-            console.log(mes)
             switch (String(mes)) {
                 case '01':
                     texto = `Janeiro de ${ano}`
                     break;
-                
+
                 case '02':
                     texto = `Fevereiro de ${ano}`
                     break;
-                
+
                 case '03':
                     texto = `Março de ${ano}`
                     break;
-                
+
                 case '04':
                     texto = `Abril de ${ano}`
                     break;
-                
+
                 case '05':
                     texto = `Maio de ${ano}`
                     break;
-                
+
                 case '06':
                     texto = `Junho de ${ano}`
                     break;
-                
+
                 case '07':
                     texto = `Julho de ${ano}`
                     break;
-                
+
                 case '08':
                     texto = `Agosto de ${ano}`
                     break;
-                
+
                 case '09':
                     texto = `Setembro de ${ano}`
                     break;
-                
+
                 case '10':
                     texto = `Outubro de ${ano}`
                     break;
-                
+
                 case '11':
                     texto = `Novembro de ${ano}`
                     break;
-                
+
                 case '12':
                     texto = `Dezembro de ${ano}`
                     break;
@@ -194,39 +203,31 @@
             optionsHTML += `<option class="optSelect" value="${dataOpt}">${texto}</option>`;
         }
 
-        SelectSemana.innerHTML = optionsHTML;
-
-
-        SelectSemana.innerHTML = optionsHTML;
+        SelectMes.innerHTML = optionsHTML;
 
 
         var kpi3 = document.getElementById('kpi3')
         var kpi4 = document.getElementById('kpi4')
-        SelectSemana.addEventListener('change', function () {
-            switch (SelectSemana.value) {
-                case '1':
-                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
-                    kpi4.innerHTML = `Menor fluxo de veiculos na última semana`;
-                    break;
-                case '2':
-                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 2 semanas`;
-                    kpi4.innerHTML = `Menor fluxo de veiculos nas últimas 2 semanas`;
-                    break;
-                case '4':
-                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 4 semanas`;
-                    kpi4.innerHTML = `Menor fluxo de veiculos nas últimas 4 semanas`;
-                    break;
-                default:
-                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
-                    kpi4.innerHTML = `Menor fluxo de veiculos na última semana`;
-                    break;
 
-            }
-        })
+        function CarregarTextoKPI() {
+            const textoMes = SelectMes.selectedOptions[0].text;
+            const textoSemana = SelectSemana.selectedOptions[0].text;
+
+            kpi3.innerHTML = `Maior fluxo de veiculos no mês de ${textoMes} na ${textoSemana[0].toLowerCase() + textoSemana.slice(1)}`;
+            kpi4.innerHTML = `Menor fluxo de veiculos no mês de ${textoMes} na ${textoSemana[0].toLowerCase() + textoSemana.slice(1)}`;
+        }
 
         addEventListener("DOMContentLoaded", function () {
+            CarregarTextoKPI();
             ObterDadosKPI3();
+            ObterDadosKPI4();
         });
+
+        SelectSemana.addEventListener('change', ObterDadosKPI3)
+        SelectMes.addEventListener('change', ObterDadosKPI3)
+        SelectSemana.addEventListener('change', ObterDadosKPI4)
+        SelectMes.addEventListener('change', ObterDadosKPI4)
+
 
         function ObterDadosKPI3() {
             var SelectSemana = document.getElementById('SelectSemana');
@@ -239,22 +240,68 @@
                 },
                 body: JSON.stringify({
                     selectSemanaServer: SelectSemana.value,
-                    selectMesServer: SelectMes.value,
+                    selectPeriodoServer: SelectMes.value,
                 }),
             })
-                .then(async function (resposta) {
+                .then(function (resposta) {
                     console.log("resposta: ", resposta);
 
-                    if (resposta.ok) { //Status == 200 'ok'
-                        alert('Cadastro efetuado');
+                    if (resposta.ok) {
+                        var kpi3Value = document.getElementById('kpi3Value')
+                        var KPI3diaSemana = document.getElementById('KPI3diaSemana')
 
-                        window.location = "../pages/login_cadastro.html";
+                        resposta.json().then(json => {
+                            kpi3Value.innerHTML = json.totalEntradas;
+                            KPI3diaSemana.innerHTML = json.diaSemana
+                        })
+                        CarregarTextoKPI()
 
+                    }
+                    else {
+                        alert('Nenhum dado encontrado')
+                        SelectSemana.value = "1";
+                        const textoSemana = SelectSemana.options[0].text;
+                        kpi3.innerHTML = `Maior fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
+                        ObterDadosKPI3();
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
 
-                    } else {
-                        var erroDaController = await resposta.json(); //Recebe qualquer erro marcado da controller
-                        console.log('Erro ao cadastrar')
-                        alert('Erro ao cadastrar: ' + erroDaController.erroEmail) //Se fosse outro erro sem ser de email acredito que daria um alert inconsistente
+        }
+        function ObterDadosKPI4() {
+            var SelectSemana = document.getElementById('SelectSemana');
+            var SelectMes = document.getElementById('SelectMes');
+
+            fetch("/dashboard/ObterDadosKPI4", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    selectSemanaServer: SelectSemana.value,
+                    selectPeriodoServer: SelectMes.value,
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+                        var kpi4Value = document.getElementById('kpi4Value')
+                        var KPI4diaSemana = document.getElementById('KPI4diaSemana')
+                        resposta.json().then(json => {
+                            kpi4Value.innerHTML = json.totalEntradas;
+                            KPI4diaSemana.innerHTML = json.diaSemana
+
+                        })
+                        CarregarTextoKPI()
+                    }
+                    else {
+                        SelectSemana.value = "1";
+                        const textoSemana = SelectSemana.options[0].text;
+                        kpi4.innerHTML = `Menor fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
+                        ObterDadosKPI4();
                     }
                 })
                 .catch(function (resposta) {
@@ -265,24 +312,6 @@
 
         // var selectSensor = document.getElementById("SelectSensor")
         var SelectPiso = document.getElementById("SelectPiso")
-
-        SelectSemana.addEventListener('change', function () {
-            switch (SelectSemana.value) {
-                case '1':
-                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
-                    break;
-                case '2':
-                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 2 semanas`;
-                    break;
-                case '4':
-                    kpi3.innerHTML = `Maior fluxo de veiculos nas últimas 4 semanas`;
-                    break;
-                default:
-                    kpi3.innerHTML = `Maior fluxo de veiculos na última semana`;
-                    break;
-
-            }
-        })
 
         // const dadosSensores = {
         //     "sensor 1": [0, 0, 0, 0, 1, 1],
