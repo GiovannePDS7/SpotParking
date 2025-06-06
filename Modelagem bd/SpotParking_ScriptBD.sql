@@ -133,9 +133,29 @@ SET lc_time_names = 'pt_BR';
 
 select * from Log;
 
-select 
+
+select
     dayname(l.dataHora) as dia_semana,
-    count(*) as total_entradas
+    count(distinct l.fkDemandOcup) as total_entradas
+from Log l
+join Demanda_Ocupacional d on l.fkDemandOcup = d.idDemandOcup and l.fkSensor = d.fkSensor
+join Sensor s on d.fkSensor = s.idSensor
+join Vaga v on s.fkVaga = v.idVaga
+join Estacionamento e on v.fkEstacionamento = e.idEstacionamento
+join Shopping sh on e.fkShopping = sh.idShopping
+join Usuario u on sh.fkUsuario = u.idUsuario
+where
+    l.status_vaga = 'Ocupado'
+    and l.dataHora between '2025-06-01' and '2025-06-07'
+    and u.idUsuario = 1
+group by dia_semana
+order by total_entradas desc
+limit 1;
+
+select
+ dayname(l.dataHora) as dia_semana,
+    date_format(l.dataHora, '%H:%i') as horario,
+    count(*) as total_ocupacoes
 from Log l
 join Demanda_Ocupacional d on l.fkDemandOcup = d.idDemandOcup and l.fkSensor = d.fkSensor
 join Sensor s on d.fkSensor = s.idSensor
@@ -145,10 +165,90 @@ join Shopping sh on e.fkShopping = sh.idShopping
 join Usuario u on sh.fkUsuario = u.idUsuario
 where 
     l.status_vaga = 'Ocupado'
-    and l.dataHora between '2025-06-01' and '2025-06-30' -- arrumar aqui
+    and l.dataHora between '2025-06-01' and '2025-06-08'
     and u.idUsuario = 1
-group by dia_semana
-order by total_entradas desc
+group by dayname(l.dataHora), horario
+order by total_ocupacoes asc
 limit 1;
 
 
+select * from Log;
+
+show tables;
+
+describe demanda_ocupacional;
+describe Log;
+
+
+
+select * from Log order by idLog desc;
+
+select * from demanda_ocupacional order by idDemandOcup desc;
+
+------------------------
+
+
+
+
+
+
+
+
+
+
+-- ÚLTIMAS 6 HORAS
+
+SELECT 
+    DATE(l.dataHora) AS Dia,
+    DATE_FORMAT(l.dataHora, '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+        FROM Log l
+        JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
+        WHERE d.status_vaga = 'Ocupação finalizada'
+		AND DATE(l.dataHora) = CURDATE()
+        AND HOUR(l.dataHora) BETWEEN date_format(l.dataHora, '%H') - 5 and HOUR(NOW())
+        GROUP BY dia, Hora
+		ORDER BY Hora desc
+        limit 6;
+
+-- ÚLTIMAS 6 HORAS - HORA ATUAL
+
+SELECT 
+    DATE(l.dataHora) AS Dia,
+    DATE_FORMAT(l.dataHora, '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+        FROM Log l
+        JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
+        WHERE d.status_vaga = 'Ocupação finalizada'
+		AND DATE(l.dataHora) = CURDATE()
+        AND HOUR(l.dataHora) BETWEEN date_format(l.dataHora, '%H') - 5 and HOUR(NOW()) - 1
+        GROUP BY dia, Hora
+        ORDER BY Hora desc
+        limit 6;
+
+-- ÚLTIMA 1 HORA
+SELECT 
+    CURDATE() AS Dia,
+    DATE_FORMAT(NOW(), '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+        FROM Log l
+        JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
+        WHERE d.status_vaga = 'Ocupado'
+		AND DATE(l.dataHora) = CURDATE()
+        AND DATE_FORMAT(l.dataHora, '%H:00') = DATE_FORMAT(NOW(), '%H:00');
+--
+
+----------------------------------
+
+select DATE(l.dataHora) as dia, count(distinct(l.fkDemandOcup)) as Ocupacao from log l group by dia order by DATE(l.dataHora) desc;
+
+
+SELECT 
+    DATE(l.dataHora) AS Dia,
+    DATE_FORMAT(l.dataHora, '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+        FROM Log l
+        JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
+        WHERE d.status_vaga = 'Ocupação finalizada'
+		AND DATE(l.dataHora) = CURDATE()
+        AND HOUR(l.dataHora) BETW
+        -- AND HOUR(l.dataHora) BETWEEN date_format(l.dataHora, '%H') - 5 and HOUR(NOW()) - 1
+        GROUP BY dia, Hora
+        ORDER BY Hora desc
+        limit 6;

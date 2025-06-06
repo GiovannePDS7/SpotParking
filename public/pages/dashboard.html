@@ -25,34 +25,24 @@
     <div id="containerDash">
         <h2 id="tituloDash">Painel de Gestão do Estacionamento</h2>
         <main id="containerMain">
-            <div id="containerSelectSensor">
-                <span class="spanContainerSelect">Escolha a vaga que deseja visualizar os dados do sensor</span>
-                <!-- <select id="SelectSensor" class="selects">
-                    <option class="optSelect" value="sensor 1">Sensor 1</option>
-                    <option class="optSelect" value="sensor 2">Sensor 2</option>
-                    <option class="optSelect" value="sensor 3">Sensor 3</option>
-                </select> -->
-                <select id="SelectPiso" class="selects">
-                    <option class="optSelect" value="P01">Piso 1</option>
-                    <option class="optSelect" value="P02">Piso 2</option>
-                    <option class="optSelect" value="P03">Piso 3</option>
-                </select>
-                <select id="SelectPosicao" class="selects">
-                    <option class="optSelect" value="A01">A01</option>
-                    <option class="optSelect" value="A02">A02</option>
-                    <option class="optSelect" value="A03">A03</option>
-                </select>
-            </div>
+
 
             <div id="containerLeft">
                 <div class="containerKPI">
                     <div class="KPI">
                         <span class="titleKPI" id="kpi1">Horário com maior ocupação</span>
-                        <span class="KPIvalue">12:00</span>
+                        <div class="containerKPIDados">
+                            <span class="KPIvalue" id="kpi1Value"></span>
+                            <span class="KPIdiaSemana" id="KPI1diaSemana"></span>
+                        </div>
+
                     </div>
                     <div class="KPI">
                         <span class="titleKPI" id="kpi2">Horário com menor ocupação</span>
-                        <span class="KPIvalue">09:00</span>
+                        <div class="containerKPIDados">
+                            <span class="KPIvalue" id="kpi2Value"></span>
+                            <span class="KPIdiaSemana" id="KPI2diaSemana"></span>
+                        </div>
                     </div>
 
                 </div>
@@ -63,27 +53,12 @@
                             <canvas id="Ocupacao_PHorario"></canvas>
                         </div>
                     </div>
-                    <div class="containerCanvas">
-                        <span class="titleGrafico">Total de vagas ocupadas e disponíveis por horário</span>
-                        <div class="grafico">
-                            <canvas id="Total_Ocup_Disp"></canvas>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <div id="containerRight">
                 <div class="containerKPI">
-                    <div id="containerSelectKPI">
-                        <span class="spanContainerSelect">Escolha o mês</span>
-                        <select id="SelectMes" class="selects"></select>
-                        <span class="spanContainerSelect">Escolha a semana</span>
-                        <select id="SelectSemana" class="selects">
-                            <option class="optSelect" value="1">Primeira semana</option>
-                            <option class="optSelect" value="2">Segunda semana</option>
-                            <option class="optSelect" value="3">Terceira semana</option>
-                            <option class="optSelect" value="4">Quarta semana</option>
-                        </select>
-                    </div>
+
                     <div class="KPI">
                         <span class="titleKPI" id="kpi3"></span>
                         <div class="containerKPIDados">
@@ -99,6 +74,7 @@
                             <span class="KPIdiaSemana" id="KPI4diaSemana"></span>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="containerGrafico">
                     <div class="containerCanvas" id="containerCanvasRight">
@@ -109,28 +85,43 @@
                                 <canvas id="SensorEspecifico"></canvas>
                             </div>
                         </div>
-                        <div class="containerSubCanvas">
-                            <div class="grafico">
-                                <canvas id="OcupAtual_Dispon"></canvas>
-                            </div>
-                        </div>
+                      
                     </div>
-                    <div class="containerCanvas">
-                        <span class="titleGrafico">Fluxo total de veículos na semana</span>
-                        <div class="grafico">
-                            <canvas id="fluxoTotal"></canvas>
-                        </div>
-                    </div>
-
                 </div>
+            </div>
+            <div id="containerSelects">
+                <div id="containerSelectKPI">
+                        <span class="spanContainerSelect">Escolha o mês</span>
+                        <select id="SelectMes" class="selects"></select>
+                        <span class="spanContainerSelect">Escolha a semana</span>
+                        <select id="SelectSemana" class="selects">
+                            <option class="optSelect" value="1">Primeira semana</option>
+                            <option class="optSelect" value="2">Segunda semana</option>
+                            <option class="optSelect" value="3">Terceira semana</option>
+                            <option class="optSelect" value="4">Quarta semana</option>
+                        </select>
+                    </div>  
+                <div id="containerSelectSensor">
+                    <span class="spanContainerSelect">Escolha a vaga que deseja visualizar os dados do sensor</span>
+                    <select id="SelectPiso" class="selects">
+                        <option class="optSelect" value="P01">Piso 1</option>
+                        <option class="optSelect" value="P02">Piso 2</option>
+                        <option class="optSelect" value="P03">Piso 3</option>
+                    </select>
+                    <select id="SelectPosicao" class="selects">
+                        <option class="optSelect" value="A01">A01</option>
+                        <option class="optSelect" value="A02">A02</option>
+                        <option class="optSelect" value="A03">A03</option>
+                    </select>
+                </div>
+
             </div>
         </main>
     </div>
     <script>
-
+        var idUsuario = sessionStorage.ID_USUARIO;
         const SelectSemana = document.getElementById('SelectSemana');
         const SelectMes = document.getElementById('SelectMes');
-
 
         const hoje = new Date();
         let optionsHTML = '';
@@ -209,7 +200,15 @@
         var kpi3 = document.getElementById('kpi3')
         var kpi4 = document.getElementById('kpi4')
 
-        function CarregarTextoKPI() {
+        function CarregarTextoKPI_3_4() {
+            const textoMes = SelectMes.selectedOptions[0].text;
+            const textoSemana = SelectSemana.selectedOptions[0].text;
+
+            kpi3.innerHTML = `Maior fluxo de veiculos no mês de ${textoMes} na ${textoSemana[0].toLowerCase() + textoSemana.slice(1)}`;
+            kpi4.innerHTML = `Menor fluxo de veiculos no mês de ${textoMes} na ${textoSemana[0].toLowerCase() + textoSemana.slice(1)}`;
+        }
+
+        function CarregarTextoKPI_1_2() {
             const textoMes = SelectMes.selectedOptions[0].text;
             const textoSemana = SelectSemana.selectedOptions[0].text;
 
@@ -218,15 +217,21 @@
         }
 
         addEventListener("DOMContentLoaded", function () {
-            CarregarTextoKPI();
+            CarregarTextoKPI_3_4();
             ObterDadosKPI3();
             ObterDadosKPI4();
+            ObterDadosKPI1();
+            ObterDadosKPI2();
         });
 
         SelectSemana.addEventListener('change', ObterDadosKPI3)
         SelectMes.addEventListener('change', ObterDadosKPI3)
         SelectSemana.addEventListener('change', ObterDadosKPI4)
         SelectMes.addEventListener('change', ObterDadosKPI4)
+        SelectSemana.addEventListener('change', ObterDadosKPI1)
+        SelectMes.addEventListener('change', ObterDadosKPI1)
+        SelectSemana.addEventListener('change', ObterDadosKPI2)
+        SelectMes.addEventListener('change', ObterDadosKPI2)
 
 
         function ObterDadosKPI3() {
@@ -241,6 +246,7 @@
                 body: JSON.stringify({
                     selectSemanaServer: SelectSemana.value,
                     selectPeriodoServer: SelectMes.value,
+                    idUsuario: idUsuario
                 }),
             })
                 .then(function (resposta) {
@@ -254,7 +260,7 @@
                             kpi3Value.innerHTML = json.totalEntradas;
                             KPI3diaSemana.innerHTML = json.diaSemana
                         })
-                        CarregarTextoKPI()
+                        CarregarTextoKPI_3_4()
 
                     }
                     else {
@@ -262,7 +268,6 @@
                         SelectSemana.value = "1";
                         const textoSemana = SelectSemana.options[0].text;
                         kpi3.innerHTML = `Maior fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
-                        ObterDadosKPI3();
                     }
                 })
                 .catch(function (resposta) {
@@ -282,6 +287,7 @@
                 body: JSON.stringify({
                     selectSemanaServer: SelectSemana.value,
                     selectPeriodoServer: SelectMes.value,
+                    idUsuario: idUsuario
                 }),
             })
                 .then(function (resposta) {
@@ -295,13 +301,80 @@
                             KPI4diaSemana.innerHTML = json.diaSemana
 
                         })
-                        CarregarTextoKPI()
+                        CarregarTextoKPI_3_4()
                     }
                     else {
                         SelectSemana.value = "1";
                         const textoSemana = SelectSemana.options[0].text;
                         kpi4.innerHTML = `Menor fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
-                        ObterDadosKPI4();
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+        function ObterDadosKPI1() {
+            var SelectSemana = document.getElementById('SelectSemana');
+            var SelectMes = document.getElementById('SelectMes');
+
+            fetch("/dashboard/ObterDadosKPI1", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    selectSemanaServer: SelectSemana.value,
+                    selectPeriodoServer: SelectMes.value,
+                    idUsuario: idUsuario
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+
+                        var kpi1Value = document.getElementById('kpi1Value')
+                        var KPI1diaSemana = document.getElementById('KPI1diaSemana')
+                        resposta.json().then(json => {
+                            console.table(json)
+                            kpi1Value.innerHTML = `${json.horario} | ${json.totalOcupacao}`
+                            KPI1diaSemana.innerHTML = `${json.diaSemana}`
+                        })
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+        function ObterDadosKPI2() {
+            var SelectSemana = document.getElementById('SelectSemana');
+            var SelectMes = document.getElementById('SelectMes');
+
+            fetch("/dashboard/ObterDadosKPI2", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    selectSemanaServer: SelectSemana.value,
+                    selectPeriodoServer: SelectMes.value,
+                    idUsuario: idUsuario
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+
+                        var kpi2Value = document.getElementById('kpi2Value')
+                        var KPI2diaSemana = document.getElementById('KPI2diaSemana')
+                        resposta.json().then(json => {
+                            console.table(json)
+                            kpi2Value.innerHTML = `${json.horario} | ${json.totalOcupacao}`
+                            KPI2diaSemana.innerHTML = `${json.diaSemana}`
+                        })
                     }
                 })
                 .catch(function (resposta) {

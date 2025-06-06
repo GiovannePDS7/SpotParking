@@ -43,14 +43,15 @@ var dashboardModel = require("../models/dashboardModel.js");
 function ObterDadosKPI3(req, res) {
     var Semana = req.body.selectSemanaServer;
     var Periodo = req.body.selectPeriodoServer;
-
+    var idUsuario = req.body.idUsuario;
+    
     if (Semana == undefined) {
         res.status(400).send("Valor do select está undefined!");
     } else if (Periodo == undefined) {
         res.status(400).send("Valor do periodo está undefined!");
     } else {
 
-        dashboardModel.ObterDadosKPI3(Periodo, Semana)
+        dashboardModel.ObterDadosKPI3(Periodo, Semana, idUsuario)
             .then(
                 function (resposta) {
                     console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
@@ -73,14 +74,14 @@ function ObterDadosKPI3(req, res) {
 function ObterDadosKPI4(req, res) {
     var Semana = req.body.selectSemanaServer;
     var Periodo = req.body.selectPeriodoServer;
-
+    var idUsuario = req.body.idUsuario;
     if (Semana == undefined) {
         res.status(400).send("Valor do select está undefined!");
     } else if (Periodo == undefined) {
         res.status(400).send("Valor do periodo está undefined!");
     } else {
 
-        dashboardModel.ObterDadosKPI4(Periodo, Semana)
+        dashboardModel.ObterDadosKPI4(Periodo, Semana, idUsuario)
             .then(
                 function (resposta) {
                     console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
@@ -101,8 +102,74 @@ function ObterDadosKPI4(req, res) {
 
 }
 
+function ObterDadosKPI1(req, res) {
+    var Semana = req.body.selectSemanaServer;
+    var Periodo = req.body.selectPeriodoServer;
+    var idUsuario = req.body.idUsuario;
+    if (Semana == undefined) {
+        res.status(400).send("Valor do select está undefined!");
+    } else if (Periodo == undefined) {
+        res.status(400).send("Valor do periodo está undefined!");
+    } else {
+
+        dashboardModel.ObterDadosKPI1(Periodo, Semana, idUsuario)
+            .then(
+                function (resposta) {
+                    console.log(`Resultados KPI1: ${JSON.stringify(resposta)}`); // transforma JSON em String
+
+                    res.json({
+                        diaSemana: resposta[0].dia_semana,
+                        horario: resposta[0].horario,
+                        totalOcupacao: resposta[0].total_ocupacoes,
+                    });
+
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+
+}
+
+function ObterDadosKPI2(req, res) {
+    var Semana = req.body.selectSemanaServer;
+    var Periodo = req.body.selectPeriodoServer;
+    var idUsuario = req.body.idUsuario;
+    if (Semana == undefined) {
+        res.status(400).send("Valor do select está undefined!");
+    } else if (Periodo == undefined) {
+        res.status(400).send("Valor do periodo está undefined!");
+    } else {
+
+        dashboardModel.ObterDadosKPI2(Periodo, Semana, idUsuario)
+            .then(
+                function (resposta) {
+                    console.log(`Resultados KPI2: ${JSON.stringify(resposta)}`); // transforma JSON em String
+
+                    res.json({
+                        diaSemana: resposta[0].dia_semana,
+                        horario: resposta[0].horario,
+                        totalOcupacao: resposta[0].total_ocupacoes,
+                    });
+
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+
+}
+
 
 module.exports = {
     ObterDadosKPI3,
-    ObterDadosKPI4
+    ObterDadosKPI4,
+    ObterDadosKPI1,
+    ObterDadosKPI2
 }

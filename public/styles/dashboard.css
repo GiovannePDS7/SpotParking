@@ -17,27 +17,44 @@ body {
 
 
 #containerMain {
-    height: 100vh;
-    width: 80%;
+    height: 58vh;
+    width: 90%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 2%;
 }
 
 #containerLeft,
 #containerRight {
-    width: 49.4%;
+    width: 40.8%;
+}
+
+#containerLeft,
+#containerRight,
+#containerSelects {
     height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#containerSelects{
+    height: 80%;
 }
 
 .containerKPI {
     display: flex;
-    height: 23%;
     justify-content: space-between;
+    padding: 1vw 0;
+    height: 24vh;
+    width: 100%;
 }
 
 .containerGrafico {
-    height: 77%;
+    height: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -45,7 +62,7 @@ body {
 
 .KPI {
     width: 49%;
-    height: 90%;
+    height: 100%;
     background: #0f1114;
     display: flex;
     align-items: center;
@@ -70,8 +87,8 @@ body {
 .containerCanvas {
     background: #0f1114;
     border-radius: 10px;
-    height: 49%;
     display: flex;
+    height: 100%;
     align-items: center;
     flex-direction: column;
 }
@@ -80,7 +97,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 90%;
+    height: 85%;
     width: 100%;
     padding: 0.5vw 0;
 }
@@ -88,6 +105,7 @@ body {
 .titleGrafico {
     font-size: 1.4vw;
     padding-top: 0.5vw;
+        white-space: nowrap;
     text-align: center;
 }
 
@@ -120,10 +138,14 @@ body {
 
 #containerCanvasRight {
     flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 #containerDash {
-    width: 92%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -131,7 +153,6 @@ body {
 }
 
 #tituloDash {
-    margin-top: 10%;
     font-size: 2.5vw;
     color: #fff;
 }
@@ -139,9 +160,9 @@ body {
 #containerSelectKPI,
 #containerSelectSensor {
     background: #0f1114;
-    position: absolute;
+    /* position: absolute; */
     width: 12vw;
-    height:8.5vw;
+    height: 8.5vw;
     left: 87%;
     top: 15.6%;
     border-radius: 10px;
@@ -151,11 +172,8 @@ body {
     flex-direction: column;
 }
 
-#containerSelectSensor {
-    top: 43.5%;
-    height: 12.5vw;
 
-}
+
 
 .selects {
     all: unset;
@@ -190,14 +208,16 @@ body {
 .spanContainerSelect {
     text-align: center;
     font-size: 1vw;
+
 }
-.containerKPIDados{
+
+.containerKPIDados {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-bottom: 1vh;
 }
 
-.KPIdiaSemana{
+.KPIdiaSemana {
     font-size: 1vw;
 }

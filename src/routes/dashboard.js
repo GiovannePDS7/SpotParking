@@ -8,6 +8,12 @@ var dashboardController = require("../controllers/dashboardController");
 //     usuarioController.cadastrar(req, res);
 // })
 
+router.post("/ObterDadosKPI1", function (req, res) {
+    dashboardController.ObterDadosKPI1(req, res);
+})
+router.post("/ObterDadosKPI2", function (req, res) {
+    dashboardController.ObterDadosKPI2(req, res);
+})
 router.post("/ObterDadosKPI3", function (req, res) {
     dashboardController.ObterDadosKPI3(req, res);
 })
