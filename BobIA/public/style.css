@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+header {
+    width: 100%;
+    height: 13vh;
+    display: flex;
+    transition: 0.5s ease;
+    background: #000;
+}
+
+#logo {
+    width: 15vw;
+}
+
+.container-header {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container-header:nth-child(2) {
+    width: 50%;
+}
+
+
+.container-header:nth-child(1),
+.container-header:nth-child(3) {
+    width: 25%;
+}
+
+#perfilIcon {
+    width: 3.5vw;
+}
+
+#setalIcon {
+    width: 2.3vw;
+    cursor: pointer;
+}
+
+#container {
+    margin-top: 5%;
+    border: 0.5px white solid;
+    border-radius: 15px;
+    width: 60%;
+    margin: 50px auto;
+    text-align: center;
+}
+#barrapesquisa {
+    display: flex;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+input {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 400px;
+    border: solid;
+}
+input:focus {
+outline: none;
+border: 0.6px #d17a1d solid;
+}
+#nomebobia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#nomebobia img {
+    width: 3%;
+    height: 3%;
+}
+select,
+button {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button {
+    background-color: #d17a1d;
+    color: #FFFFFF;
+    border: none;
+}
+
+button:hover {
+    background-color: #be6505;
+}
+
+#resposta {
+    padding-left: 0;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #D0D3D4;
+    border: 1px solid #63666A;
+    text-align: left;
+    display: flex;
+}
+#barrapesquisa {
+display: flex;
+justify-content: end;
+margin-bottom: 2%;
+margin-right: 2%;
+margin-top: 2%;
+}
+#result {
+    display: none;
+    align-items: flex-end;
+    margin-inline: 10px ;
+}
+#result img {
+    width: 5%;
+    height: 5%;
+}
+hr {
+    width: 95%;
+}

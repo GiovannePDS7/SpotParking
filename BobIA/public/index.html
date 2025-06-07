@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BobIA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container-header">
+           <img src="./images/LogoSpot.png" id="logo">
+        </div>
+        <div class="container-header">
+
+        </div>
+        <div class="container-header">
+            <span id="spanUsuario"></span>
+            <img src="./images/perfil.svg" id="perfilIcon">
+            <img src="./images/setaPerfil.svg" id="setalIcon">
+        </div>
+    </header>
+
+
+    <div id="container">
+        <div id="nomebobia">
+            <img src="./images/bob_logo.png" alt="">
+        <h1>BobIA</h1>
+    </div>
+    <div>
+        <hr>
+    </div>
+    <div id="result">
+<img src="./images/bob_logo.png" alt="">
+    <div id="resposta"></div>
+    </div>
+    <div id="barrapesquisa">
+    <input type="text" id="pergunta" placeholder="Digite a pergunta...">
+        <button onclick="gerarResposta()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        
+        async function gerarResposta() {
+            const pergunta = document.getElementById('pergunta').value;
+
+            const response = await fetch('/perguntar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pergunta })
+            });
+
+            const data = await response.json();
+
+            result.style.display = 'flex';
+            document.getElementById('resposta').innerText = data.resultado;
+        }
+
+    </script>
+    
+</body>
+</html>
