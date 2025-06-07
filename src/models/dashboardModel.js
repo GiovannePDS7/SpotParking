@@ -6,7 +6,7 @@ async function ObterDadosKPI3(Periodo, Semana, idUsuario) {
     var MesF30 = ['04', '06', '09', '11']
     var MesF31 = ['01', '03', '05', '07', '08', '10']
     switch (Semana) {
-        case '1':           
+        case '1':
             dataInicial = `${Periodo}01`;
             dataFinal = `${Periodo}07`;
             break;
@@ -62,7 +62,6 @@ limit 1;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     var resSql = await database.executar(instrucaoSql);
-
     switch (resSql[0].dia_semana) {
         case 'Sunday':
             resSql[0].dia_semana = 'Domingo'
@@ -242,7 +241,7 @@ limit 1;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     var resSql = await database.executar(instrucaoSql);
-    
+
     switch (resSql[0].dia_semana) {
         case 'Sunday':
             resSql[0].dia_semana = 'Domingo'
@@ -333,7 +332,7 @@ limit 1;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     var resSql = await database.executar(instrucaoSql);
-    
+
     switch (resSql[0].dia_semana) {
         case 'Sunday':
             resSql[0].dia_semana = 'Domingo'
@@ -359,9 +358,131 @@ limit 1;
     }
     return resSql;
 }
+
+function pegarUltimosDadosG1(idUsuario) {
+
+    var instrucaoSql = `
+select * from (
+    select 
+        curdate() as dia,
+        date_format(now(), '%H:00') as hora, 
+        count(distinct l.fkdemandocup) as ocupacao
+    from log l
+    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
+    join sensor s on s.idsensor = d.fksensor
+    join vaga v on v.idvaga = s.fkvaga
+    join estacionamento e on e.idestacionamento = v.fkestacionamento
+    join shopping sh on sh.idshopping = e.fkshopping
+    join usuario u on u.idusuario = sh.fkusuario
+    where d.status_vaga = 'Ocupado'
+      and u.idusuario = ${idUsuario}
+      and date(l.datahora) = curdate()
+      and date_format(l.datahora, '%H:00') = date_format(now(), '%H:00')
+
+    union all
+
+    select 
+        date(l.datahora) as dia,
+        date_format(l.datahora, '%H:00') as hora, 
+        count(distinct l.fkdemandocup) as ocupacao
+    from log l
+    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
+    join sensor s on s.idsensor = d.fksensor
+    join vaga v on v.idvaga = s.fkvaga
+    join estacionamento e on e.idestacionamento = v.fkestacionamento
+    join shopping sh on sh.idshopping = e.fkshopping
+    join usuario u on u.idusuario = sh.fkusuario
+    where d.status_vaga = 'Ocupação finalizada'
+      and u.idusuario = ${idUsuario}
+      and date(l.datahora) = curdate()
+      and hour(l.datahora) between hour(now()) - 5 and hour(now()) - 1
+    group by dia, hora
+) as resultado_final
+order by dia desc, hora desc
+limit 6;
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
+
+function pegarDadosTempoRealG1(idUsuario) {
+    var instrucaoSql = `
+    select * from (
+    select 
+    curdate() as dia,
+        date_format(now(), '%H:00') as hora, 
+        count(distinct l.fkdemandocup) as ocupacao
+    from log l
+    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
+    join sensor s on s.idsensor = d.fksensor
+    join vaga v on v.idvaga = s.fkvaga
+    join estacionamento e on e.idestacionamento = v.fkestacionamento
+    join shopping sh on sh.idshopping = e.fkshopping
+    join usuario u on u.idusuario = sh.fkusuario
+    where d.status_vaga = 'Ocupado'
+    and u.idusuario = ${idUsuario}
+    and date(l.datahora) = curdate()
+    and date_format(l.datahora, '%H:00') = date_format(now(), '%H:00')
+    
+    union all
+    
+    select 
+    date(l.datahora) as dia,
+    date_format(l.datahora, '%H:00') as hora, 
+    count(distinct l.fkdemandocup) as ocupacao
+    from log l
+    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
+    join sensor s on s.idsensor = d.fksensor
+    join vaga v on v.idvaga = s.fkvaga
+    join estacionamento e on e.idestacionamento = v.fkestacionamento
+    join shopping sh on sh.idshopping = e.fkshopping
+    join usuario u on u.idusuario = sh.fkusuario
+    where d.status_vaga = 'Ocupação finalizada'
+    and u.idusuario = ${idUsuario}
+    and date(l.datahora) = curdate()
+    and hour(l.datahora) between hour(now()) - 5 and hour(now()) - 1
+    group by dia, hora
+    ) as resultado_final
+    order by dia desc, hora desc
+    limit 1;
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
+
+function ObterPiso(idUsuario) {
+    var instrucaoSql = `
+select distinct v.piso from Vaga v join Estacionamento e on v.fkEstacionamento = e.idEstacionamento 
+join Shopping s on s.idShopping = e.fkShopping join Usuario u on u.idUsuario = s.fkUsuario where u.idUsuario = ${idUsuario}
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
+
+function ObterPosicao(idUsuario) {
+    console.log('Model Posicao')
+    var instrucaoSql = `
+select distinct v.posicao from Vaga v join Estacionamento e on v.fkEstacionamento = e.idEstacionamento 
+join Shopping s on s.idShopping = e.fkShopping join Usuario u on u.idUsuario = s.fkUsuario where u.idUsuario = ${idUsuario}
+`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+
+}
+
 module.exports = {
     ObterDadosKPI3,
     ObterDadosKPI4,
     ObterDadosKPI1,
-    ObterDadosKPI2
+    ObterDadosKPI2,
+    pegarUltimosDadosG1,
+    pegarDadosTempoRealG1,
+    ObterPiso,
+    ObterPosicao
 };

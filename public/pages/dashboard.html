@@ -74,7 +74,7 @@
                             <span class="KPIdiaSemana" id="KPI4diaSemana"></span>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="containerGrafico">
                     <div class="containerCanvas" id="containerCanvasRight">
@@ -85,34 +85,26 @@
                                 <canvas id="SensorEspecifico"></canvas>
                             </div>
                         </div>
-                      
+
                     </div>
                 </div>
             </div>
             <div id="containerSelects">
                 <div id="containerSelectKPI">
-                        <span class="spanContainerSelect">Escolha o mês</span>
-                        <select id="SelectMes" class="selects"></select>
-                        <span class="spanContainerSelect">Escolha a semana</span>
-                        <select id="SelectSemana" class="selects">
-                            <option class="optSelect" value="1">Primeira semana</option>
-                            <option class="optSelect" value="2">Segunda semana</option>
-                            <option class="optSelect" value="3">Terceira semana</option>
-                            <option class="optSelect" value="4">Quarta semana</option>
-                        </select>
-                    </div>  
+                    <span class="spanContainerSelect">Escolha o mês</span>
+                    <select id="SelectMes" class="selects"></select>
+                    <span class="spanContainerSelect">Escolha a semana</span>
+                    <select id="SelectSemana" class="selects">
+                        <option class="optSelect" value="1">Primeira semana</option>
+                        <option class="optSelect" value="2">Segunda semana</option>
+                        <option class="optSelect" value="3">Terceira semana</option>
+                        <option class="optSelect" value="4">Quarta semana</option>
+                    </select>
+                </div>
                 <div id="containerSelectSensor">
                     <span class="spanContainerSelect">Escolha a vaga que deseja visualizar os dados do sensor</span>
-                    <select id="SelectPiso" class="selects">
-                        <option class="optSelect" value="P01">Piso 1</option>
-                        <option class="optSelect" value="P02">Piso 2</option>
-                        <option class="optSelect" value="P03">Piso 3</option>
-                    </select>
-                    <select id="SelectPosicao" class="selects">
-                        <option class="optSelect" value="A01">A01</option>
-                        <option class="optSelect" value="A02">A02</option>
-                        <option class="optSelect" value="A03">A03</option>
-                    </select>
+                    <select id="SelectPiso" class="selects"></select>
+                    <select id="SelectPosicao" class="selects"></select>
                 </div>
 
             </div>
@@ -222,6 +214,9 @@
             ObterDadosKPI4();
             ObterDadosKPI1();
             ObterDadosKPI2();
+            obterDadosGrafico1();
+            ObterPiso();
+            ObterPosicao();
         });
 
         SelectSemana.addEventListener('change', ObterDadosKPI3)
@@ -232,7 +227,6 @@
         SelectMes.addEventListener('change', ObterDadosKPI1)
         SelectSemana.addEventListener('change', ObterDadosKPI2)
         SelectMes.addEventListener('change', ObterDadosKPI2)
-
 
         function ObterDadosKPI3() {
             var SelectSemana = document.getElementById('SelectSemana');
@@ -264,11 +258,10 @@
 
                     }
                     else {
-                        alert('Nenhum dado encontrado')
-                        SelectSemana.value = "1";
                         const textoSemana = SelectSemana.options[0].text;
-                        kpi3.innerHTML = `Maior fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
+                        kpi4.innerHTML = `Maior fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
                     }
+
                 })
                 .catch(function (resposta) {
                     console.log(`#ERRO: ${resposta}`);
@@ -304,7 +297,6 @@
                         CarregarTextoKPI_3_4()
                     }
                     else {
-                        SelectSemana.value = "1";
                         const textoSemana = SelectSemana.options[0].text;
                         kpi4.innerHTML = `Menor fluxo de veículos no mês de ${SelectMes.options[0].text} na ${textoSemana.toLowerCase()}`;
                     }
@@ -314,6 +306,8 @@
                 });
 
         }
+
+        var aux_aviso = false
         function ObterDadosKPI1() {
             var SelectSemana = document.getElementById('SelectSemana');
             var SelectMes = document.getElementById('SelectMes');
@@ -338,9 +332,23 @@
                         var KPI1diaSemana = document.getElementById('KPI1diaSemana')
                         resposta.json().then(json => {
                             console.table(json)
-                            kpi1Value.innerHTML = `${json.horario} | ${json.totalOcupacao}`
-                            KPI1diaSemana.innerHTML = `${json.diaSemana}`
+                            kpi1Value.innerHTML = `${json.horario}`
+                            KPI1diaSemana.innerHTML = `${json.diaSemana}: <b>${json.totalOcupacao}</b> ocupações`
                         })
+                    } else {
+                        if (resposta == undefined && SelectSemana.value == '1' && SelectMes.selectedIndex == 0 && aux_aviso == false) {
+                            alert('Nenhum dado da semana atual encontrado');
+                            aux_aviso = true
+                        } else {
+                            alert('Nenhum dado encontrado');
+                        }
+                        SelectSemana.value = "1";
+                        SelectMes.selectedIndex = 0;
+                        ObterDadosKPI1()
+                        ObterDadosKPI2()
+                        ObterDadosKPI3()
+                        ObterDadosKPI4()
+
                     }
                 })
                 .catch(function (resposta) {
@@ -372,8 +380,8 @@
                         var KPI2diaSemana = document.getElementById('KPI2diaSemana')
                         resposta.json().then(json => {
                             console.table(json)
-                            kpi2Value.innerHTML = `${json.horario} | ${json.totalOcupacao}`
-                            KPI2diaSemana.innerHTML = `${json.diaSemana}`
+                            kpi2Value.innerHTML = `${json.horario}`
+                            KPI2diaSemana.innerHTML = `${json.diaSemana}: <b>${json.totalOcupacao}</b> ocupações`
                         })
                     }
                 })
@@ -383,114 +391,385 @@
 
         }
 
-        // var selectSensor = document.getElementById("SelectSensor")
-        var SelectPiso = document.getElementById("SelectPiso")
 
-        // const dadosSensores = {
-        //     "sensor 1": [0, 0, 0, 0, 1, 1],
-        //     "sensor 2": [1, 0, 0, 1, 1, 0],
-        //     "sensor 3": [1, 1, 1, 0, 0, 1]
-        // };
+        // Gráficos
 
-        // selectSensor.addEventListener("change", function () {
-        //     const valorSelect = selectSensor.value;
-        //     sensoresEspecificos.data.datasets[0].data = dadosSensores[valorSelect];
-        //     spanSensorEspecifico.innerHTML = `Horário que o ${valorSelect} ficou ocupado`
-        //     sensoresEspecificos.update();
-        // })
+        let proximaAtualizacaoG1;
 
-        SelectPiso.addEventListener("change", function () {
+        function obterDadosGrafico1() {
 
-            //    sensoresEspecificos.update();
-        })
+            if (proximaAtualizacaoG1 != undefined) {
+                clearTimeout(proximaAtualizacaoG1);
+            }
 
-        const Ocupacao_PHorario = document.getElementById('Ocupacao_PHorario');
-        const Total_Ocup_Disp = document.getElementById('Total_Ocup_Disp');
-        const SensorEspecifico = document.getElementById('SensorEspecifico');
-        const OcupAtual_Dispon = document.getElementById('OcupAtual_Dispon');
-        const fluxoTotal = document.getElementById('fluxoTotal');
+            fetch(
+                `/dashboard/pegarUltimosDadosG1/${idUsuario}`,
+                { cache: "no-store" }
+            )
+                .then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (resposta) {
+                            console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                            resposta.reverse();
 
-        new Chart(Ocupacao_PHorario, {
-            type: 'line',
-            data: {
-                labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+                            plotarGrafico1(resposta, idUsuario);
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    console.error(
+                        `Erro na obtenção dos dados p/ gráfico: ${error.message}`
+                    );
+                });
+        }
+
+
+        function plotarGrafico1(resposta, idUsuario) {
+            console.log("iniciando plotagem do gráfico...");
+
+            // Criando estrutura para plotar gráfico - labels
+            let labels = [];
+
+            // Criando estrutura para plotar gráfico - dados
+            let dados = {
+                labels: labels,
                 datasets: [{
-                    label: 'Ocupação',
-                    data: [20, 30, 50, 70, 65, 40],
+                    label: 'Ocupação do estacionamento',
+                    data: [],
                     borderColor: '#d17711',
                     backgroundColor: 'transparent',
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
+            };
+
+            console.log("----------------------------------------------");
+            console.log(
+                'Estes dados foram recebidos pela funcao "obterDadosGrafico1" e passados para "plotarGrafico1":'
+            );
+            console.log(resposta);
+            // Inserindo valores recebidos em estrutura para plotar o gráfico
+            for (i = 0; i < resposta.length; i++) {
+                var registro = resposta[i];
+                labels.push(registro.hora);
+                dados.datasets[0].data.push(registro.ocupacao);
             }
-        });
 
-        new Chart(Total_Ocup_Disp, {
-            type: 'bar',
-            data: {
-                labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
-                datasets: [
-                    {
-                        label: 'Vagas disponíveis',
-                        data: [80, 70, 50, 30, 35, 60],
-                        backgroundColor: '#d17711'
+            console.log("----------------------------------------------");
+            console.log("O gráfico será plotado com os respectivos valores:");
+            console.log("Labels:");
+            console.log(labels);
+            console.log("Dados:");
+            console.log(dados.datasets);
+            console.log("----------------------------------------------");
+
+            // Criando estrutura para plotar gráfico - config
+            const config = {
+                type: "line",
+                data: dados,
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#fff",
+                            },
+                        },
+                        y: {
+                            ticks: {
+                                color: "#fff",
+                            },
+                        },
                     },
-                    {
-                        label: 'Ocupadas',
-                        data: [20, 30, 50, 70, 65, 40],
-                        backgroundColor: '#2E2E2E'
-                    }
-
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 80
-                    }
                 },
-                plugins: {
-                    legend: {
-                        display: true,
-                        labels: {
-                            color: '#fff'
-                        }
-                    },
+            };
 
-                },
-                responsive: true,
-                scales: {
-                    x: {
-                        stacked: true,
-                    },
-                    y: {
-                        stacked: true
+            // Adicionando gráfico criado em div na tela
+            let myChart = new Chart(document.getElementById(`Ocupacao_PHorario`), config);
+            setTimeout(
+                () => atualizarGrafico1(idUsuario, dados, myChart),
+                2000
+            );
+        }
+
+
+        function atualizarGrafico1(idUsuario, dados, myChart) {
+            fetch(
+                `/dashboard/tempo-realG1/${idUsuario}`,
+                { cache: "no-store" }
+            )
+                .then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (novoRegistro) {
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                            console.log(`Dados atuais do gráfico:`);
+                            console.log(dados);
+                            console.log(`DADO ATUAL: ${dados.datasets[0].data[dados.datasets[0].data.length - 1]}`);
+                            console.log(`DADO RECEBIDO: ${novoRegistro[0].ocupacao}`);
+                            if (novoRegistro[0].ocupacao != dados.datasets[0].data[dados.datasets[0].data.length - 1] || novoRegistro[0].hora != dados.labels[dados.labels.length - 1]) {
+
+                                dados.labels[dados.labels.length - 1] = novoRegistro[0].hora;
+                                dados.datasets[0].data[dados.datasets[0].data.length - 1] = novoRegistro[0].ocupacao;
+
+
+                                myChart.update();
+                            }
+
+
+                            else {
+                                console.log(
+                                    "--------"
+                                );
+                                console.log(
+                                    "Como não há dados novos para captura, o gráfico não atualizará."
+                                );
+
+                                console.log("Ocupação do novo dado capturado:");
+                                console.log(novoRegistro[0].ocupacao);
+                                console.log("Ocupação do último dado capturado:");
+                                console.log(dados.datasets[0].data[dados.datasets[0].data.length - 1]);
+                                console.log(
+                                    "--------"
+                                );
+                            }
+                            // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                            proximaAtualizacaoG1 = setTimeout(
+                                () =>
+                                    atualizarGrafico1(
+                                        idUsuario,
+                                        dados,
+                                        myChart
+                                    ),
+                                2000
+                            );
+                        });
+                    } else {
+                        console.error("Nenhum dado encontrado ou erro na API");
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        proximaAtualizacaoG1 = setTimeout(
+                            () =>
+                                atualizarGrafico1(
+                                    idUsuario,
+                                    dados,
+                                    myChart
+                                ),
+                            2000
+                        );
                     }
-                }
-            }
-        });
+                })
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+        }
+
+        function ObterPiso() {
+            var SelectPiso = document.getElementById('SelectPiso');
 
 
-        // const sensoresEspecificos = new Chart(SensorEspecifico, {
-        //     type: 'line',
+            fetch(`/dashboard/ObterPiso/${idUsuario}`, { cache: "no-store" })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+                    if (resposta.ok) {
+                        resposta.json().then(json => {
+                            for (let i = 0; i < json.length; i++) {
+                                SelectPiso.innerHTML += `<option class="optSelect" value="${json[i].piso}">${json[i].piso}</option>`
+                            }
+                        })
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+
+        function ObterPosicao() {
+            var SelectPosicao = document.getElementById('SelectPosicao');
+
+            fetch(`/dashboard/ObterPosicao/${idUsuario}`, { cache: "no-store" })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+                    if (resposta.ok) {
+                        resposta.json().then(json => {
+                            for (let i = 0; i < json.length; i++) {
+                                SelectPosicao.innerHTML += `<option class="optSelect" value="${json[i].posicao}">${json[i].posicao}</option>`
+                            }
+                        })
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        // // var selectSensor = document.getElementById("SelectSensor")
+        // var SelectPiso = document.getElementById("SelectPiso")
+
+        // // const dadosSensores = {
+        // //     "sensor 1": [0, 0, 0, 0, 1, 1],
+        // //     "sensor 2": [1, 0, 0, 1, 1, 0],
+        // //     "sensor 3": [1, 1, 1, 0, 0, 1]
+        // // };
+
+        // // selectSensor.addEventListener("change", function () {
+        // //     const valorSelect = selectSensor.value;
+        // //     sensoresEspecificos.data.datasets[0].data = dadosSensores[valorSelect];
+        // //     spanSensorEspecifico.innerHTML = `Horário que o ${valorSelect} ficou ocupado`
+        // //     sensoresEspecificos.update();
+        // // })
+
+        // SelectPiso.addEventListener("change", function () {
+
+        //     //    sensoresEspecificos.update();
+        // })
+
+        // const Ocupacao_PHorario = document.getElementById('Ocupacao_PHorario');
+        // const Total_Ocup_Disp = document.getElementById('Total_Ocup_Disp');
+        // const SensorEspecifico = document.getElementById('SensorEspecifico');
+        // const OcupAtual_Dispon = document.getElementById('OcupAtual_Dispon');
+        // const fluxoTotal = document.getElementById('fluxoTotal');
+
+        // // new Chart(Ocupacao_PHorario, {
+        // //     type: 'line',
+        // //     data: {
+        // //         labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+        // //         datasets: [{
+        // //             label: 'Ocupação',
+        // //             data: [20, 30, 50, 70, 65, 40],
+        // //             borderColor: '#d17711',
+        // //             backgroundColor: 'transparent',
+        // //         }]
+        // //     },
+        // //     options: {
+        // //         scales: {
+        // //             y: {
+        // //                 beginAtZero: true
+        // //             }
+        // //         },
+        // //         plugins: {
+        // //             legend: {
+        // //                 display: false
+        // //             }
+        // //         }
+        // //     }
+        // // });
+
+        // new Chart(Total_Ocup_Disp, {
+        //     type: 'bar',
         //     data: {
         //         labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+        //         datasets: [
+        //             {
+        //                 label: 'Vagas disponíveis',
+        //                 data: [80, 70, 50, 30, 35, 60],
+        //                 backgroundColor: '#d17711'
+        //             },
+        //             {
+        //                 label: 'Ocupadas',
+        //                 data: [20, 30, 50, 70, 65, 40],
+        //                 backgroundColor: '#2E2E2E'
+        //             }
+
+        //         ]
+        //     },
+        //     options: {
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true,
+        //                 max: 80
+        //             }
+        //         },
+        //         plugins: {
+        //             legend: {
+        //                 display: true,
+        //                 labels: {
+        //                     color: '#fff'
+        //                 }
+        //             },
+
+        //         },
+        //         responsive: true,
+        //         scales: {
+        //             x: {
+        //                 stacked: true,
+        //             },
+        //             y: {
+        //                 stacked: true
+        //             }
+        //         }
+        //     }
+        // });
+
+
+        // // const sensoresEspecificos = new Chart(SensorEspecifico, {
+        // //     type: 'line',
+        // //     data: {
+        // //         labels: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+        // //         datasets: [{
+        // //             label: '',
+        // //             data: dadosSensores["sensor 1"],
+        // //             borderColor: '#d17711',
+        // //             backgroundColor: 'transparent',
+        // //         }]
+        // //     },
+        // //     options: {
+        // //         plugins: {
+        // //             legend: {
+        // //                 display: false
+        // //             }
+        // //         },
+        // //         scales: {
+        // //             y: {
+        // //                 beginAtZero: true,
+        // //             }
+        // //         }
+        // //     }
+        // // });
+
+        // new Chart(OcupAtual_Dispon, {
+        //     type: 'doughnut',
+        //     data: {
+        //         labels: ['Ocupação Atual', 'Vagas Disponíveis'],
         //         datasets: [{
-        //             label: '',
-        //             data: dadosSensores["sensor 1"],
-        //             borderColor: '#d17711',
-        //             backgroundColor: 'transparent',
+        //             data: [45, 55],
+        //             backgroundColor: ['#d17711', '#292927'],
+        //             borderWidth: 0
+        //         }]
+        //     },
+        //     options: {
+        //         cutout: '70%',
+        //         plugins: {
+        //             legend: {
+        //                 position: 'bottom',
+        //                 labels: {
+        //                     color: '#fff',
+        //                     boxWidth: 15,
+        //                     boxHeight: 15,
+        //                     font: {
+        //                         size: 12
+        //                     }
+        //                 },
+        //             }
+        //         }
+        //     }
+        // });
+
+        // new Chart(fluxoTotal, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
+        //         datasets: [{
+        //             label: 'Veículos',
+        //             data: [80, 150, 200, 250, 300, 350],
+        //             backgroundColor: '#d17711'
         //         }]
         //     },
         //     options: {
@@ -498,61 +777,9 @@
         //             legend: {
         //                 display: false
         //             }
-        //         },
-        //         scales: {
-        //             y: {
-        //                 beginAtZero: true,
-        //             }
         //         }
         //     }
         // });
-
-        new Chart(OcupAtual_Dispon, {
-            type: 'doughnut',
-            data: {
-                labels: ['Ocupação Atual', 'Vagas Disponíveis'],
-                datasets: [{
-                    data: [45, 55],
-                    backgroundColor: ['#d17711', '#292927'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            color: '#fff',
-                            boxWidth: 15,
-                            boxHeight: 15,
-                            font: {
-                                size: 12
-                            }
-                        },
-                    }
-                }
-            }
-        });
-
-        new Chart(fluxoTotal, {
-            type: 'bar',
-            data: {
-                labels: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
-                datasets: [{
-                    label: 'Veículos',
-                    data: [80, 150, 200, 250, 300, 350],
-                    backgroundColor: '#d17711'
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
     </script>
 </body>
 
