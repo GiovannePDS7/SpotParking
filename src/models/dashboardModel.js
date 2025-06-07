@@ -377,31 +377,31 @@ select * from (
     where d.status_vaga = 'Ocupado'
       and u.idusuario = ${idUsuario}
       and date(l.datahora) = curdate()
-      and date_format(l.datahora, '%H:00') = date_format(now(), '%H:00')
+      and date_format(l.datahora, '%H') = date_format(now(), '%H')
 
     union all
-
+    
     select 
         date(l.datahora) as dia,
         date_format(l.datahora, '%H:00') as hora, 
         count(distinct l.fkdemandocup) as ocupacao
-    from log l
+    from Log l
     join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
     join sensor s on s.idsensor = d.fksensor
     join vaga v on v.idvaga = s.fkvaga
     join estacionamento e on e.idestacionamento = v.fkestacionamento
     join shopping sh on sh.idshopping = e.fkshopping
     join usuario u on u.idusuario = sh.fkusuario
-    where d.status_vaga = 'Ocupação finalizada'
+    where d.status_vaga = 'Ocupado'
       and u.idusuario = ${idUsuario}
       and date(l.datahora) = curdate()
-      and hour(l.datahora) between hour(now()) - 5 and hour(now()) - 1
+      and hour(l.datahora) between date_format(l.dataHora, '%H') - 5 and HOUR(NOW()) - 1
     group by dia, hora
 ) as resultado_final
 order by dia desc, hora desc
 limit 6;
 `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    console.log("Executando a instrução SQL Ultimos Dados: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 
 }
@@ -409,9 +409,9 @@ limit 6;
 
 function pegarDadosTempoRealG1(idUsuario) {
     var instrucaoSql = `
-    select * from (
+select * from (
     select 
-    curdate() as dia,
+        curdate() as dia,
         date_format(now(), '%H:00') as hora, 
         count(distinct l.fkdemandocup) as ocupacao
     from log l
@@ -422,31 +422,31 @@ function pegarDadosTempoRealG1(idUsuario) {
     join shopping sh on sh.idshopping = e.fkshopping
     join usuario u on u.idusuario = sh.fkusuario
     where d.status_vaga = 'Ocupado'
-    and u.idusuario = ${idUsuario}
-    and date(l.datahora) = curdate()
-    and date_format(l.datahora, '%H:00') = date_format(now(), '%H:00')
-    
+      and u.idusuario = ${idUsuario}
+      and date(l.datahora) = curdate()
+      and date_format(l.datahora, '%H') = date_format(now(), '%H')
+
     union all
     
     select 
-    date(l.datahora) as dia,
-    date_format(l.datahora, '%H:00') as hora, 
-    count(distinct l.fkdemandocup) as ocupacao
-    from log l
+        date(l.datahora) as dia,
+        date_format(l.datahora, '%H:00') as hora, 
+        count(distinct l.fkdemandocup) as ocupacao
+    from Log l
     join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
     join sensor s on s.idsensor = d.fksensor
     join vaga v on v.idvaga = s.fkvaga
     join estacionamento e on e.idestacionamento = v.fkestacionamento
     join shopping sh on sh.idshopping = e.fkshopping
     join usuario u on u.idusuario = sh.fkusuario
-    where d.status_vaga = 'Ocupação finalizada'
-    and u.idusuario = ${idUsuario}
-    and date(l.datahora) = curdate()
-    and hour(l.datahora) between hour(now()) - 5 and hour(now()) - 1
+    where d.status_vaga = 'Ocupado'
+      and u.idusuario = ${idUsuario}
+      and date(l.datahora) = curdate()
+      and hour(l.datahora) between date_format(l.dataHora, '%H') - 5 and HOUR(NOW()) - 1
     group by dia, hora
-    ) as resultado_final
-    order by dia desc, hora desc
-    limit 1;
+) as resultado_final
+order by dia desc, hora desc
+limit 1;
 `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

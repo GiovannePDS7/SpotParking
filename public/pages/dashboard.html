@@ -503,10 +503,24 @@
                             console.log(dados);
                             console.log(`DADO ATUAL: ${dados.datasets[0].data[dados.datasets[0].data.length - 1]}`);
                             console.log(`DADO RECEBIDO: ${novoRegistro[0].ocupacao}`);
-                            if (novoRegistro[0].ocupacao != dados.datasets[0].data[dados.datasets[0].data.length - 1] || novoRegistro[0].hora != dados.labels[dados.labels.length - 1]) {
 
-                                dados.labels[dados.labels.length - 1] = novoRegistro[0].hora;
-                                dados.datasets[0].data[dados.datasets[0].data.length - 1] = novoRegistro[0].ocupacao;
+                            var novaOcupacao = novoRegistro[0].ocupacao
+                            var novaHora = novoRegistro[0].hora
+                            var ultimaOcupacao = dados.datasets[0].data[dados.datasets[0].data.length - 1]
+                            var ultimaHora = dados.labels[dados.labels.length - 1]
+
+                            if (novaOcupacao != ultimaOcupacao || novaHora != ultimaHora) {
+
+                                if (novaOcupacao != ultimaOcupacao && novaHora == ultimaHora) {
+                                    dados.datasets[0].data[dados.datasets[0].data.length - 1] = novaOcupacao;
+                                } else if (novaHora != ultimaHora) {
+                                    if(dados.labels.length >= 6){
+                                        dados.labels.shift();
+                                        dados.datasets[0].data.shift();
+                                    }
+                                    dados.datasets[0].data.push(novaOcupacao)
+                                    dados.labels.push(novaHora)
+                                }
 
 
                                 myChart.update();
