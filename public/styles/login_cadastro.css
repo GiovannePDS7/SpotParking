@@ -110,9 +110,9 @@ main {
 
 .btnForm {
     width: 80%;
-    background: #d17a1d;
+    background: transparent;
+    border: 1px solid #5a4d03;
     color: #fff;
-    border: none;
     cursor: pointer;
     letter-spacing: 0.8px;
     transition: 0.2s ease;
@@ -123,6 +123,7 @@ main {
 
 .btnForm:hover {
     background-color: #be6505;
+    border: none;
 }
 
 #EsqSenha {
