@@ -45,9 +45,10 @@ app.listen(PORTA_SERVIDOR, () => {
 // rota para receber perguntas e gerar respostas
 app.post("/perguntar", async (req, res) => {
     const pergunta = req.body.pergunta;
+    const nome = req.body.nome;
 
     try {
-        const resultado = await gerarResposta(pergunta);
+        const resultado = await gerarResposta(pergunta, nome);
         res.json({ resultado });
     } catch (error) {
         res.status(500).json({ error: 'Erro interno do servidor' });
@@ -56,13 +57,14 @@ app.post("/perguntar", async (req, res) => {
 });
 
 // função para gerar respostas usando o gemini
-async function gerarResposta(mensagem) {
-
+async function gerarResposta(mensagem, nome) {
+    // var nome = sessionStorage.NOME_USUARIO;
+    // console.log(nome)
     try {
         // gerando conteúdo com base na pergunta
         const modeloIA = chatIA.models.generateContent({
             model: "gemini-2.0-flash",
-            contents: `Você ira servir para apoiar um suporte N3 então seja tecnico e em um paragráfo responda: ${mensagem}`
+            contents: `Você ira servir para apoiar ${nome} um suporte N3 então seja tecnico, em um paragráfo responda: ${mensagem}`
 
         });
         const resposta = (await modeloIA).text;

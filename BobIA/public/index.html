@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,25 +8,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="validarSessao">
-       <div id="containerFerramentas">
+<body onload="validarSessao()">
+    <div id="containerFerramentas">
         <div id="containerSair">
             <button id="btnSair" onclick="limparSessao()">Sair</button>
         </div>
-    </div> 
+    </div>
     <header>
         <div class="container-header">
-           <img src="./images/LogoSpot.png" id="logo">
+            <img src="./images/LogoSpot.png" id="logo">
         </div>
         <div class="container-header">
-            
+
         </div>
         <div class="container-header">
-            
+
             <span id="spanUsuario"></span>
             <img src="./images/perfil.svg" id="perfilIcon">
             <img src="./images/setaPerfil.svg" id="setalIcon">
-            
+
         </div>
     </header>
 
@@ -33,32 +34,32 @@
     <div id="container">
         <div id="nomebobia">
             <img src="./images/bob_logo.png" alt="">
-        <h1>BobIA</h1>
-    </div>
-    <div>
-        <hr>
-    </div>
-    <div id="result">
-<img src="./images/bob_logo.png" alt="">
-    <div id="resposta"></div>
-    </div>
-    <div id="barrapesquisa">
-    <input type="text" id="pergunta" placeholder="Digite a pergunta...">
-        <button onclick="gerarResposta()">Enviar</button>
+            <h1>BobIA</h1>
+        </div>
+        <div>
+            <hr>
+        </div>
+        <div id="result">
+            <img src="./images/bob_logo.png" alt="">
+            <div id="resposta"></div>
+        </div>
+        <div id="barrapesquisa">
+            <input type="text" id="pergunta" placeholder="Digite a pergunta...">
+            <button onclick="gerarResposta()">Enviar</button>
         </div>
     </div>
 
     <script>
-        
+
         async function gerarResposta() {
             const pergunta = document.getElementById('pergunta').value;
-
+            var nome =  sessionStorage.NOME_USUARIO;
             const response = await fetch('/perguntar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ pergunta })
+                body: JSON.stringify({ pergunta, nome })
             });
 
             const data = await response.json();
@@ -67,51 +68,50 @@
             document.getElementById('resposta').innerText = data.resultado;
         }
 
-function validarSessao() {
-    var email = sessionStorage.EMAIL_USUARIO;
-    var nome = sessionStorage.NOME_USUARIO;
-    if (email == null || nome == null) {
-        alert('Entre primeiro para acessar!')
-        window.location = "http://localhost:3333";
-    }
-    else {
-        GetUsuarioNome(nome);
-    }
-}
+        function validarSessao() {
 
-function GetUsuarioNome(nome) {
-    var [primeiroNome] = nome.split(' ');
-    if (nome != null) {
-        spanUsuario.innerHTML = 'Seja Bem-Vindo(a) ' + primeiroNome;
-    }
-}
-function limparSessao() {
-    sessionStorage.clear();
-    alert('Saindo...')
-    window.location = "http://localhost:3333";
-}
+            const urlParams = new URLSearchParams(window.location.search);
+            sessionStorage.setItem("NOME_USUARIO", urlParams.get('nome'));
+            sessionStorage.setItem("EMAIL_USUARIO", urlParams.get('email'));
+            sessionStorage.setItem("ID_USUARIO", urlParams.get('id'));
+            sessionStorage.setItem("FUNCAO_USUARIO", urlParams.get('funcao'));
 
-window.onload = function () {
-    validarSessao();
 
-    const seta = document.getElementById("setalIcon");
-    const container = document.getElementById("containerFerramentas");
-
-    seta.addEventListener("click", function () {
-        container.classList.toggle("ativo");
-    });
-};
-
-const seta = document.getElementById('setalIcon')
-seta.addEventListener('click', function() {
-           
-            if (containerFerramentas.style.display === 'none' || containerFerramentas.style.display === '') {
-               containerFerramentas.style.display = 'flex';
-            } else {
-                containerFerramentas.style.display = 'none';
+            var email = sessionStorage.EMAIL_USUARIO;
+            var nome = sessionStorage.NOME_USUARIO;
+            var funcao = sessionStorage.FUNCAO_USUARIO;
+            console.log(`Usuário ${nome} (${email}) logado como ${funcao}`);
+            if (email == null || nome == null) {
+                alert('Entre primeiro para acessar!')
+                window.location = "http://localhost:3333";
             }
+            else {
+                GetUsuarioNome(nome);
+            }
+        }
+
+        function GetUsuarioNome(nome) {
+            var [primeiroNome] = nome.split(' ');
+            if (nome != null) {
+                spanUsuario.innerHTML = 'Seja Bem-Vindo(a) ' + primeiroNome;
+            }
+        }
+        function limparSessao() {
+            sessionStorage.clear();
+            alert('Saindo...')
+            window.location = "http://localhost:3333";
+        }
+
+
+        const seta = document.getElementById("setalIcon");
+        const container = document.getElementById("containerFerramentas");
+
+        seta.addEventListener("click", function () {
+            container.classList.toggle("ativo");
         });
+
     </script>
-   
+
 </body>
+
 </html>
