@@ -6,18 +6,26 @@
     <title>BobIA</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+
+<body onload="validarSessao">
+       <div id="containerFerramentas">
+        <div id="containerSair">
+            <button id="btnSair" onclick="limparSessao()">Sair</button>
+        </div>
+    </div> 
     <header>
         <div class="container-header">
            <img src="./images/LogoSpot.png" id="logo">
         </div>
         <div class="container-header">
-
+            
         </div>
         <div class="container-header">
+            
             <span id="spanUsuario"></span>
             <img src="./images/perfil.svg" id="perfilIcon">
             <img src="./images/setaPerfil.svg" id="setalIcon">
+            
         </div>
     </header>
 
@@ -59,7 +67,51 @@
             document.getElementById('resposta').innerText = data.resultado;
         }
 
+function validarSessao() {
+    var email = sessionStorage.EMAIL_USUARIO;
+    var nome = sessionStorage.NOME_USUARIO;
+    if (email == null || nome == null) {
+        alert('Entre primeiro para acessar!')
+        window.location = "http://localhost:3333";
+    }
+    else {
+        GetUsuarioNome(nome);
+    }
+}
+
+function GetUsuarioNome(nome) {
+    var [primeiroNome] = nome.split(' ');
+    if (nome != null) {
+        spanUsuario.innerHTML = 'Seja Bem-Vindo(a) ' + primeiroNome;
+    }
+}
+function limparSessao() {
+    sessionStorage.clear();
+    alert('Saindo...')
+    window.location = "http://localhost:3333";
+}
+
+window.onload = function () {
+    validarSessao();
+
+    const seta = document.getElementById("setalIcon");
+    const container = document.getElementById("containerFerramentas");
+
+    seta.addEventListener("click", function () {
+        container.classList.toggle("ativo");
+    });
+};
+
+const seta = document.getElementById('setalIcon')
+seta.addEventListener('click', function() {
+           
+            if (containerFerramentas.style.display === 'none' || containerFerramentas.style.display === '') {
+               containerFerramentas.style.display = 'flex';
+            } else {
+                containerFerramentas.style.display = 'none';
+            }
+        });
     </script>
-    
+   
 </body>
 </html>

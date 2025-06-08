@@ -126,3 +126,47 @@ margin-top: 2%;
 hr {
     width: 95%;
 }
+#containerFerramentas {
+    position: absolute;
+    background: rgb(32, 32, 32);
+    width: 8vw;
+    height: 11vh;
+    top: 12%;
+    right: 1%;
+    margin-right: 4%;
+    transition: 0.5s ease;
+    overflow: hidden;
+    padding: 2%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    max-height: 0vh;
+    transform: translateY(-10%);
+    transition: max-height 0.6s ease, opacity 0.6s ease, transform 0.6s ease;
+}
+#containerFerramentas.ativo {
+    max-height: 15vh; 
+    opacity: 1;
+    transform: translateY(0%);
+}
+#btnSair {
+    all: unset;
+    cursor: pointer;
+    font-family: "Raleway", sans-serif;
+    color: #fff;
+    background: #d17a1d;
+    width: 5vw;
+    height: 4vh;
+    text-align: center;
+    padding: 0.2vw 0;
+    border-radius: 5px;
+    font-size: 1vw;
+    transition: 0.3 ease;
+}
+
+#btnSair:hover {
+    background: #be6505;
+    border: 1px solid #000;
+}
