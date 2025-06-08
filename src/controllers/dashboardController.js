@@ -182,13 +182,13 @@ function pegarDadosTempoRealG1(req, res) {
 
 
 function ObterPiso(req, res) {
-
+    
     var idUsuario = req.params.idUsuario;
     if (idUsuario == undefined) {
         res.status(400).send("Valor do id está undefined!");
     } else {
         dashboardModel.ObterPiso(idUsuario)
-            .then(
+        .then(
                 function (resposta) {
                     console.log(`Resultados ObterPiso: ${JSON.stringify(resposta)}`); // transforma JSON em String
                     if (resposta.length > 0) {
@@ -208,7 +208,7 @@ function ObterPiso(req, res) {
 }
 
 function ObterPosicao(req, res) {
-
+    
     var idUsuario = req.params.idUsuario;
     if (idUsuario == undefined) {
         res.status(400).send("Valor do id está undefined!");
@@ -233,6 +233,74 @@ function ObterPosicao(req, res) {
     }
 }
 
+
+function pegarUltimosDadosG2(req, res) {
+    var idUsuario = req.params.idUsuario;
+    var piso = req.params.piso;
+    var posicao = req.params.posicao;
+
+
+    if (idUsuario == undefined) {
+        res.status(400).send("Valor do id está undefined!");
+    } else  if (posicao == undefined) {
+        res.status(400).send("Valor da posicao está undefined!");
+    } else  if (piso == undefined) {
+        res.status(400).send("Valor do piso está undefined!");
+    } {
+        dashboardModel.pegarUltimosDadosG2(idUsuario, piso, posicao)
+            .then(
+                function (resposta) {
+                    console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
+                    if (resposta.length > 0) {
+                        res.status(200).json(resposta)
+                    }
+                    else {
+                        res.status(500).send("Nenhum resultado encontrado!")
+                    }
+
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+
+}
+
+function pegarDadosTempoRealG2(req, res) {
+    var idUsuario = req.params.idUsuario;
+    var piso = req.params.piso;
+    var posicao = req.params.posicao;
+
+
+    if (idUsuario == undefined) {
+        res.status(400).send("Valor do id está undefined!");
+    } else  if (posicao == undefined) {
+        res.status(400).send("Valor da posicao está undefined!");
+    } else  if (piso == undefined) {
+        res.status(400).send("Valor do piso está undefined!");
+    } {
+        dashboardModel.pegarDadosTempoRealG2(idUsuario, piso, posicao)
+            .then(
+                function (resposta) {
+                    console.log(`Resultados: ${JSON.stringify(resposta)}`); // transforma JSON em String
+                    if (resposta.length > 0) {
+                        res.status(200).json(resposta)
+                    }
+                    else {
+                        res.status(500).send("Nenhum resultado encontrado!")
+                    }
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
 module.exports = {
     ObterDadosKPI3,
     ObterDadosKPI4,
@@ -240,6 +308,8 @@ module.exports = {
     ObterDadosKPI2,
     pegarUltimosDadosG1,
     pegarDadosTempoRealG1,
+    pegarUltimosDadosG2,
+    pegarDadosTempoRealG2,
     ObterPiso,
     ObterPosicao
 }

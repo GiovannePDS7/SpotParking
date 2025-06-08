@@ -2,7 +2,7 @@ CREATE DATABASE SpotParking;
 
 USE SpotParking;
 
--- CRIANDO TABELAS:
+-- CRIandO TABELAS:
 
 CREATE TABLE Usuario (
 	idUsuario INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,36 +95,36 @@ values (1, 'Ocupado'); -- ID será 1
 
 -- Segunda
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 0 DAY);
+values (1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 0 DAY);
 
 -- Terça
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 1 DAY);
+values (1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 1 DAY);
 
 -- Quarta (3 entradas)
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
 values 
-(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY),
-(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY + INTERVAL 2 HOUR),
-(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 2 DAY + INTERVAL 4 HOUR);
+(1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 2 DAY),
+(1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 2 DAY + interval 2 hour),
+(1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 2 DAY + interval 4 hour);
 
 -- Quinta (2 entradas)
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
 values 
-(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 3 DAY),
-(1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 3 DAY + INTERVAL 3 HOUR);
+(1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 3 DAY),
+(1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 3 DAY + interval 3 hour);
 
 -- Sexta
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 4 DAY);
+values (1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 4 DAY);
 
 -- Sábado
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 5 DAY);
+values (1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 5 DAY);
 
 -- Domingo
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (1, 1, 'Ocupado', NOW() - INTERVAL WEEKDAY(NOW()) DAY + INTERVAL 6 DAY);
+values (1, 1, 'Ocupado', now() - interval WEEKDAY(now()) DAY + interval 6 DAY);
 
 
 -- Selects
@@ -187,44 +187,71 @@ select * from demanda_ocupacional order by idDemandOcup desc;
 
 ------------------------
 
-
 -- ÚLTIMAS 6 HORAS
-
+		-- and l.dataHora between date_format(now(), '%Y-%m-%d %H:00:00') - interval 1 hour and now()
 SELECT 
-    DATE(l.dataHora) AS Dia,
-    DATE_FORMAT(l.dataHora, '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+    DATE(DATE_SUB(NOW(), INTERVAL seq HOUR)) AS dia,
+    DATE_FORMAT(DATE_SUB(NOW(), INTERVAL seq HOUR), '%H:00') AS hora,
+    (
+        SELECT COUNT(DISTINCT d.idDemandOcup)
         FROM Log l
         JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
-        WHERE d.status_vaga = 'Ocupação finalizada'
-		AND DATE(l.dataHora) = CURDATE()
-        AND HOUR(l.dataHora) BETWEEN date_format(l.dataHora, '%H') - 5 and HOUR(NOW())
-        GROUP BY dia, Hora
-		ORDER BY Hora desc
-        limit 6;
+        JOIN sensor s ON d.fksensor = s.idsensor
+        JOIN vaga v ON s.fkvaga = v.idvaga
+        JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
+        JOIN shopping sh ON e.fkshopping = sh.idshopping
+        WHERE d.status_vaga = 'Ocupado'
+          AND l.dataHora <= DATE_SUB(NOW(), INTERVAL seq HOUR)
+          AND sh.fkusuario = 1
+    ) AS ocupacao
+FROM (
+    SELECT 0 AS seq UNION ALL SELECT 1 UNION ALL SELECT 2 
+    UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+) AS horas
+ORDER BY dia DESC, hora DESC;
+
+        
+SELECT * 
+FROM Log 
+WHERE DATE(dataHora) IN (CURDATE(), CURDATE() - INTERVAL 1 DAY);
 
 -- ÚLTIMAS 6 HORAS - HORA ATUAL
 
 SELECT 
-    DATE(l.dataHora) AS Dia,
-    DATE_FORMAT(l.dataHora, '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
+    DATE(DATE_SUB(NOW(), INTERVAL seq HOUR)) AS dia,
+    DATE_FORMAT(DATE_SUB(NOW(), INTERVAL seq HOUR), '%H:00') AS hora,
+    (
+        SELECT COUNT(DISTINCT d.idDemandOcup)
         FROM Log l
         JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
-        WHERE d.status_vaga = 'Ocupação finalizada'
-		AND DATE(l.dataHora) = CURDATE()
-        AND HOUR(l.dataHora) BETWEEN date_format(l.dataHora, '%H') - 5 and HOUR(NOW()) - 1
-        GROUP BY dia, Hora
-        ORDER BY Hora desc
-        limit 6;
+        JOIN sensor s ON d.fksensor = s.idsensor
+        JOIN vaga v ON s.fkvaga = v.idvaga
+        JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
+        JOIN shopping sh ON e.fkshopping = sh.idshopping
+        WHERE d.status_vaga = 'Ocupado'
+          AND l.dataHora <= DATE_SUB(NOW(), INTERVAL seq HOUR)
+          AND sh.fkusuario = 1
+    ) AS ocupacao
+FROM (
+    SELECT 1 AS seq UNION ALL SELECT 2 UNION ALL SELECT 3 
+    UNION ALL SELECT 4 UNION ALL SELECT 5
+) AS horas
+ORDER BY dia DESC, hora DESC;
+
 
 -- ÚLTIMA 1 HORA
-SELECT 
-    CURDATE() AS Dia,
-    DATE_FORMAT(NOW(), '%H:00') AS Hora, COUNT(DISTINCT l.fkDemandOcup) as Ocupacao
-        FROM Log l
-        JOIN demanda_ocupacional d ON l.fkDemandOcup = d.idDemandOcup
-        WHERE d.status_vaga = 'Ocupado'
-		AND DATE(l.dataHora) = CURDATE()
-        AND DATE_FORMAT(l.dataHora, '%H:00') = DATE_FORMAT(NOW(), '%H:00');
+SELECT
+    CURDATE() AS dia,
+    DATE_FORMAT(NOW(), '%H:00') AS hora,
+    COUNT(DISTINCT d.idDemandOcup) AS ocupacao
+FROM Log l join demanda_ocupacional d on d.idDemandOcup = l.fkDemandOcup
+JOIN sensor s ON d.fksensor = s.idsensor
+JOIN vaga v ON s.fkvaga = v.idvaga
+JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
+JOIN shopping sh ON e.fkshopping = sh.idshopping
+JOIN usuario u ON sh.fkusuario = u.idusuario
+WHERE d.status_vaga = 'Ocupado'
+  AND u.idusuario = 1;
 
 
 ----------------------------------
@@ -233,52 +260,57 @@ values (1, 'Ocupado');
 select * from demanda_ocupacional;
 
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (50, 1, 'Ocupado', '2025-06-07 17:45:00');
-select * from demanda_ocupacional;
+values (70, 1, 'Ocupado', '2025-06-08 05:12:00');
+
 ----------------------------------
 
 select DATE(l.dataHora) as dia, count(distinct(l.fkDemandOcup)) as Ocupacao from log l group by dia order by DATE(l.dataHora) desc;
 
--- Última 1 hora + últimas 5 horas anteriores (sem coluna ordem)
+-- Última 1 hora + últimas 5 horas anteriores
 
 select * from (
-    select 
+    select
         curdate() as dia,
-        date_format(now(), '%H:00') as hora, 
-        count(distinct l.fkdemandocup) as ocupacao
+        date_format(now(), '%H:00') as hora,
+        count(distinct d.idDemandOcup) as ocupacao
     from log l
-    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
-    join sensor s on s.idsensor = d.fksensor
-    join vaga v on v.idvaga = s.fkvaga
-    join estacionamento e on e.idestacionamento = v.fkestacionamento
-    join shopping sh on sh.idshopping = e.fkshopping
-    join usuario u on u.idusuario = sh.fkusuario
+    join demanda_ocupacional d on d.idDemandOcup = l.fkDemandOcup
+    join sensor s on d.fksensor = s.idsensor
+    join vaga v on s.fkvaga = v.idvaga
+    join estacionamento e on v.fkestacionamento = e.idestacionamento
+    join shopping sh on e.fkshopping = sh.idshopping
+    join usuario u on sh.fkusuario = u.idusuario
     where d.status_vaga = 'Ocupado'
       and u.idusuario = 1
-      and date(l.datahora) = curdate()
-      and date_format(l.datahora, '%H:00') = date_format(now(), '%H:00')
 
     union all
 
     select 
-        date(l.datahora) as dia,
-        date_format(l.datahora, '%H:00') as hora, 
-        count(distinct l.fkdemandocup) as ocupacao
-    from log l
-    join demanda_ocupacional d on l.fkdemandocup = d.iddemandocup
-    join sensor s on s.idsensor = d.fksensor
-    join vaga v on v.idvaga = s.fkvaga
-    join estacionamento e on e.idestacionamento = v.fkestacionamento
-    join shopping sh on sh.idshopping = e.fkshopping
-    join usuario u on u.idusuario = sh.fkusuario
-    where d.status_vaga = 'Ocupação finalizada'
-      and u.idusuario = 1
-      and date(l.datahora) = curdate()
-      and hour(l.datahora) between hour(now()) - 5 and hour(now()) - 1
-    group by dia, hora
+        date(date_sub(now(), interval seq hour)) as dia,
+        date_format(date_sub(now(), interval seq hour), '%H:00') as hora,
+        (
+            select count(distinct d.idDemandOcup)
+            from log l
+            join demanda_ocupacional d on l.fkDemandOcup = d.idDemandOcup
+            join sensor s on d.fksensor = s.idsensor
+            join vaga v on s.fkvaga = v.idvaga
+            join estacionamento e on v.fkestacionamento = e.idestacionamento
+            join shopping sh on e.fkshopping = sh.idshopping
+            where d.status_vaga = 'Ocupado'
+              and l.dataHora <= date_sub(now(), interval seq hour)
+              and sh.fkusuario = 1
+        ) as ocupacao
+    from (
+        select 1 as seq union all select 2 union all select 3 
+        union all select 4 union all select 5
+    ) as horas
+    order by dia desc, hora desc
 ) as resultado_final
 order by dia desc, hora desc
-limit 1;
+limit 6;
+
+
+select * from log where date(dataHora) = curdate();
 
 insert into Vaga (piso, posicao, fkEstacionamento)
 values ('P2', 'A2', 1);
@@ -288,3 +320,47 @@ join Shopping s on s.idShopping = e.fkShopping join Usuario u on u.idUsuario = s
 
 select distinct v.posicao from Vaga v join Estacionamento e on v.fkEstacionamento = e.idEstacionamento 
 join Shopping s on s.idShopping = e.fkShopping join Usuario u on u.idUsuario = s.fkUsuario where u.idUsuario = 1;
+
+
+select * from (
+    select
+        curdate() as dia,
+        date_format(now(), '%H:00') as hora,
+        count(distinct d.idDemandOcup) as ocupacao
+    from log l
+    join demanda_ocupacional d on d.idDemandOcup = l.fkDemandOcup
+    join sensor s on d.fksensor = s.idsensor
+    join vaga v on s.fkvaga = v.idvaga
+    join estacionamento e on v.fkestacionamento = e.idestacionamento
+    join shopping sh on e.fkshopping = sh.idshopping
+    join usuario u on sh.fkusuario = u.idusuario
+    where d.status_vaga = 'Ocupado'
+		and v.piso = 'P1' and v.posicao = 'A1'
+      and u.idusuario = 1
+
+    union all
+
+    select 
+        date(date_sub(now(), interval seq hour)) as dia,
+        date_format(date_sub(now(), interval seq hour), '%H:00') as hora,
+        (
+            select count(distinct d.idDemandOcup)
+            from log l
+            join demanda_ocupacional d on l.fkDemandOcup = d.idDemandOcup
+            join sensor s on d.fksensor = s.idsensor
+            join vaga v on s.fkvaga = v.idvaga
+            join estacionamento e on v.fkestacionamento = e.idestacionamento
+            join shopping sh on e.fkshopping = sh.idshopping
+            where d.status_vaga = 'Ocupado'
+            and v.piso = 'P1' and v.posicao = 'A1'
+              and l.dataHora <= date_sub(now(), interval seq hour)
+              and sh.fkusuario = 1
+        ) as ocupacao
+    from (
+        select 1 as seq union all select 2 union all select 3 
+        union all select 4 union all select 5
+    ) as horas
+    order by dia desc, hora desc
+) as resultado_final
+order by dia desc, hora desc
+limit 6;

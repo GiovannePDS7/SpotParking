@@ -35,4 +35,10 @@ router.get("/ObterPiso/:idUsuario", function (req, res) {
 router.get("/ObterPosicao/:idUsuario", function (req, res) {
     dashboardController.ObterPosicao(req, res);
 })
+router.get("/pegarUltimosDadosG2/:idUsuario/:piso/:posicao", function (req, res) {
+    dashboardController.pegarUltimosDadosG2(req, res);
+})
+router.get("/tempo-realG2/:idUsuario/:piso/:posicao", function (req, res) {
+    dashboardController.pegarDadosTempoRealG2(req, res);
+})
 module.exports = router;
