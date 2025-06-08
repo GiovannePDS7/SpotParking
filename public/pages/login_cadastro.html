@@ -132,9 +132,9 @@
         function Entrar() {
             var emailVar = inputEmail.value;
             var senhaVar = inputSenha.value;
-         for (let index = 1; index < 2 ; index++) {
-                    EsqSenha.innerHTML = '<b>Esqueceu a senha?</b>'
-         }
+            for (let index = 1; index < 2; index++) {
+                EsqSenha.innerHTML = '<b>Esqueceu a senha?</b>'
+            }
             if (emailVar == "" || senhaVar == "") {
                 alert('Preencha os dados')
                 return false;
@@ -161,10 +161,22 @@
                         sessionStorage.EMAIL_USUARIO = json.email;
                         sessionStorage.NOME_USUARIO = json.nome;
                         sessionStorage.ID_USUARIO = json.id;
+                        sessionStorage.FUNCAO_USUARIO = json.funcao;
 
-                        window.location = "../pages/principal.html";
 
 
+                        // Codifica os dados para colocar na URL
+                        const nome = json.nome;
+                        const email = json.email;
+                        const id = json.id;
+                        const funcao =json.funcao;
+
+                        // Redireciona com os dados na query string
+                        if (json.funcao == 'N3') {
+                            window.location = `http://localhost:3000/?nome=${nome}&email=${email}&id=${id}&funcao=${funcao}`;
+                        } else {
+                            window.location = "../pages/principal.html";
+                        }
                     });
 
                 } else {

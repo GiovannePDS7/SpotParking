@@ -85,13 +85,26 @@ values (100, 1);
 
 insert into Vaga (piso, posicao, fkEstacionamento)
 values ('P1', 'A1', 1);
+insert into Vaga (piso, posicao, fkEstacionamento)
+values ('P1', 'A2', 1);
+insert into Vaga (piso, posicao, fkEstacionamento)
+values ('P2', 'A1', 1);
+insert into Vaga (piso, posicao, fkEstacionamento)
+values ('P2', 'A2', 1);
+
+select * from vaga;
 
 insert into Sensor (tipo, fkVaga)
 values ('sensor ultrasônico', 1);
 
+insert into Sensor (tipo, fkVaga)
+values ('sensor ultrasônico', 3);
+
 
 insert into Demanda_Ocupacional (fkSensor, status_vaga)
 values (1, 'Ocupado'); -- ID será 1
+insert into Demanda_Ocupacional (fkSensor, status_vaga)
+values (2, 'Ocupado');
 
 -- Segunda
 insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
@@ -210,7 +223,7 @@ FROM (
 ) AS horas
 ORDER BY dia DESC, hora DESC;
 
-        
+
 SELECT * 
 FROM Log 
 WHERE DATE(dataHora) IN (CURDATE(), CURDATE() - INTERVAL 1 DAY);
@@ -256,12 +269,15 @@ WHERE d.status_vaga = 'Ocupado'
 
 ----------------------------------
 insert into Demanda_Ocupacional (fkSensor, status_vaga)
-values (1, 'Ocupado');
+values (3, 'Disponivel');
 select * from demanda_ocupacional;
 
-insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
-values (70, 1, 'Ocupado', '2025-06-08 05:12:00');
+select * from Sensor;
 
+insert into Log (fkDemandOcup, fkSensor, status_vaga, dataHora)
+values (86, 3, 'Disponivel', '2025-06-08 15:00:00');
+
+select * from log where fkSensor = 3;
 ----------------------------------
 
 select DATE(l.dataHora) as dia, count(distinct(l.fkDemandOcup)) as Ocupacao from log l group by dia order by DATE(l.dataHora) desc;
@@ -364,3 +380,26 @@ select * from (
 ) as resultado_final
 order by dia desc, hora desc
 limit 6;
+
+
+SELECT
+    DATE(l.dataHora) AS dia,
+    DATE_FORMAT(l.dataHora, '%H:00') AS hora,
+    l.fkSensor as sensor,
+    CASE WHEN l.status_vaga = 'Ocupado' THEN 1 ELSE 0 END AS ocupacao
+FROM log l
+JOIN demanda_ocupacional d ON d.idDemandOcup = l.fkDemandOcup
+JOIN sensor s ON d.fksensor = s.idsensor
+JOIN vaga v ON s.fkvaga = v.idvaga
+JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
+JOIN shopping sh ON e.fkshopping = sh.idshopping
+JOIN usuario u ON sh.fkusuario = u.idusuario
+WHERE u.idusuario = 1 and l.fkSensor = 
+(select s.idSensor from sensor s join vaga v on s.fkvaga = v.idvaga where v.piso = 'P2' and v.posicao = 'A1')
+GROUP BY dia, hora, sensor, ocupacao
+ORDER BY dia DESC, hora DESC
+limit 6;
+
+select * from log where fkSensor = 3;
+
+select * from log where date(dataHora) = curdate();
