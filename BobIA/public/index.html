@@ -83,7 +83,7 @@
             console.log(`Usuário ${nome} (${email}) logado como ${funcao}`);
             if (email == null || nome == null) {
                 alert('Entre primeiro para acessar!')
-                window.location = "http://localhost:3333";
+                window.location = "http://10.18.33.73:3333";
             }
             else {
                 GetUsuarioNome(nome);
@@ -99,7 +99,7 @@
         function limparSessao() {
             sessionStorage.clear();
             alert('Saindo...')
-            window.location = "http://localhost:3333";
+            window.location = "http://10.18.33.73:3333";
         }
 
 
