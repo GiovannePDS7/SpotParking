@@ -367,13 +367,13 @@ select * from (
         curdate() as dia,
         date_format(now(), '%H:00') as hora,
         count(distinct d.idDemandOcup) as ocupacao
-    from log l
-    join demanda_ocupacional d on d.idDemandOcup = l.fkDemandOcup
-    join sensor s on d.fksensor = s.idsensor
-    join vaga v on s.fkvaga = v.idvaga
-    join estacionamento e on v.fkestacionamento = e.idestacionamento
-    join shopping sh on e.fkshopping = sh.idshopping
-    join usuario u on sh.fkusuario = u.idusuario
+    from Log l
+    join Demanda_Ocupacional d on d.idDemandOcup = l.fkDemandOcup
+    join Sensor s on d.fksensor = s.idsensor
+    join Vaga v on s.fkvaga = v.idvaga
+    join Estacionamento e on v.fkestacionamento = e.idestacionamento
+    join Shopping sh on e.fkshopping = sh.idshopping
+    join Usuario u on sh.fkusuario = u.idusuario
     where d.status_vaga = 'Ocupado'
       and u.idusuario = ${idUsuario}
 
@@ -384,12 +384,12 @@ select * from (
         date_format(date_sub(now(), interval seq hour), '%H:00') as hora,
         (
             select count(distinct d.idDemandOcup)
-            from log l
-            join demanda_ocupacional d on l.fkDemandOcup = d.idDemandOcup
-            join sensor s on d.fksensor = s.idsensor
-            join vaga v on s.fkvaga = v.idvaga
-            join estacionamento e on v.fkestacionamento = e.idestacionamento
-            join shopping sh on e.fkshopping = sh.idshopping
+            from Log l
+            join Demanda_Ocupacional d on l.fkDemandOcup = d.idDemandOcup
+            join Sensor s on d.fksensor = s.idsensor
+            join Vaga v on s.fkvaga = v.idvaga
+            join Estacionamento e on v.fkestacionamento = e.idestacionamento
+            join Shopping sh on e.fkshopping = sh.idshopping
             where d.status_vaga = 'Ocupado'
               and l.dataHora <= date_sub(now(), interval seq hour)
               and sh.fkusuario = ${idUsuario}
@@ -416,13 +416,13 @@ select * from (
         curdate() as dia,
         date_format(now(), '%H:00') as hora,
         count(distinct d.idDemandOcup) as ocupacao
-    from log l
-    join demanda_ocupacional d on d.idDemandOcup = l.fkDemandOcup
-    join sensor s on d.fksensor = s.idsensor
-    join vaga v on s.fkvaga = v.idvaga
-    join estacionamento e on v.fkestacionamento = e.idestacionamento
-    join shopping sh on e.fkshopping = sh.idshopping
-    join usuario u on sh.fkusuario = u.idusuario
+    from Log l
+    join Demanda_Ocupacional d on d.idDemandOcup = l.fkDemandOcup
+    join Sensor s on d.fksensor = s.idsensor
+    join Vaga v on s.fkvaga = v.idvaga
+    join Estacionamento e on v.fkestacionamento = e.idestacionamento
+    join Shopping sh on e.fkshopping = sh.idshopping
+    join Usuario u on sh.fkusuario = u.idusuario
     where d.status_vaga = 'Ocupado'
       and u.idusuario = ${idUsuario}
 
@@ -433,12 +433,12 @@ select * from (
         date_format(date_sub(now(), interval seq hour), '%H:00') as hora,
         (
             select count(distinct d.idDemandOcup)
-            from log l
-            join demanda_ocupacional d on l.fkDemandOcup = d.idDemandOcup
-            join sensor s on d.fksensor = s.idsensor
-            join vaga v on s.fkvaga = v.idvaga
-            join estacionamento e on v.fkestacionamento = e.idestacionamento
-            join shopping sh on e.fkshopping = sh.idshopping
+            from Log l
+            join Demanda_Ocupacional d on l.fkDemandOcup = d.idDemandOcup
+            join Sensor s on d.fksensor = s.idsensor
+            join Vaga v on s.fkvaga = v.idvaga
+            join Estacionamento e on v.fkestacionamento = e.idestacionamento
+            join Shopping sh on e.fkshopping = sh.idshopping
             where d.status_vaga = 'Ocupado'
               and l.dataHora <= date_sub(now(), interval seq hour)
               and sh.fkusuario = ${idUsuario}
@@ -485,22 +485,28 @@ function pegarUltimosDadosG2(idUsuario, piso, posicao) {
 
     var instrucaoSql = `
 SELECT
+    MIN(idLog) AS id,
     DATE(l.dataHora) AS dia,
     DATE_FORMAT(l.dataHora, '%H:00') AS hora,
-    l.fkSensor as sensor,
-    CASE WHEN l.status_vaga = 'Ocupado' THEN 1 ELSE 0 END AS ocupacao
-FROM log l
-JOIN demanda_ocupacional d ON d.idDemandOcup = l.fkDemandOcup
-JOIN sensor s ON d.fksensor = s.idsensor
-JOIN vaga v ON s.fkvaga = v.idvaga
-JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
-JOIN shopping sh ON e.fkshopping = sh.idshopping
-JOIN usuario u ON sh.fkusuario = u.idusuario
-WHERE u.idusuario = ${idUsuario} and l.fkSensor = 
-(select s.idSensor from sensor s join vaga v on s.fkvaga = v.idvaga where v.piso = '${piso}' and v.posicao = '${posicao}')
-GROUP BY dia, hora, sensor, ocupacao
+    l.fkSensor AS sensor,
+    MAX(CASE WHEN l.status_vaga = 'Ocupado' THEN 1 ELSE 0 END) AS ocupacao
+FROM Log l
+JOIN Demanda_Ocupacional d ON d.idDemandOcup = l.fkDemandOcup
+JOIN Sensor s ON d.fksensor = s.idsensor
+JOIN Vaga v ON s.fkvaga = v.idvaga
+JOIN Estacionamento e ON v.fkestacionamento = e.idestacionamento
+JOIN Shopping sh ON e.fkShopping = sh.idShopping
+JOIN Usuario u ON sh.fkusuario = u.idusuario
+WHERE u.idusuario = ${idUsuario}
+  AND l.fkSensor = (
+    SELECT s.idSensor
+    FROM Sensor s
+    JOIN Vaga v ON s.fkvaga = v.idvaga
+    WHERE v.piso = '${piso}' AND v.posicao = '${posicao}'
+  )
+GROUP BY dia, hora, sensor
 ORDER BY dia DESC, hora DESC
-limit 6;
+LIMIT 6;
 `;
     console.log("Executando a instrução SQL Ultimos Dados: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -513,22 +519,28 @@ function pegarDadosTempoRealG2(idUsuario, piso, posicao) {
 
     var instrucaoSql = `
 SELECT
+    MIN(idLog) AS id,
     DATE(l.dataHora) AS dia,
     DATE_FORMAT(l.dataHora, '%H:00') AS hora,
-    l.fkSensor as sensor,
-    CASE WHEN l.status_vaga = 'Ocupado' THEN 1 ELSE 0 END AS ocupacao
-FROM log l
-JOIN demanda_ocupacional d ON d.idDemandOcup = l.fkDemandOcup
-JOIN sensor s ON d.fksensor = s.idsensor
-JOIN vaga v ON s.fkvaga = v.idvaga
-JOIN estacionamento e ON v.fkestacionamento = e.idestacionamento
-JOIN shopping sh ON e.fkshopping = sh.idshopping
-JOIN usuario u ON sh.fkusuario = u.idusuario
-WHERE u.idusuario = ${idUsuario} and l.fkSensor = 
-(select s.idSensor from sensor s join vaga v on s.fkvaga = v.idvaga where v.piso = '${piso}' and v.posicao = '${posicao}')
-GROUP BY dia, hora, sensor, ocupacao
+    l.fkSensor AS sensor,
+    MAX(CASE WHEN l.status_vaga = 'Ocupado' THEN 1 ELSE 0 END) AS ocupacao
+FROM Log l
+JOIN Demanda_Ocupacional d ON d.idDemandOcup = l.fkDemandOcup
+JOIN Sensor s ON d.fksensor = s.idsensor
+JOIN Vaga v ON s.fkvaga = v.idvaga
+JOIN Estacionamento e ON v.fkestacionamento = e.idestacionamento
+JOIN Shopping sh ON e.fkShopping = sh.idShopping
+JOIN Usuario u ON sh.fkusuario = u.idusuario
+WHERE u.idusuario = ${idUsuario}
+  AND l.fkSensor = (
+    SELECT s.idSensor
+    FROM Sensor s
+    JOIN Vaga v ON s.fkvaga = v.idvaga
+    WHERE v.piso = '${piso}' AND v.posicao = '${posicao}'
+  )
+GROUP BY dia, hora, sensor
 ORDER BY dia DESC, hora DESC
-limit 1;
+LIMIT 1;
 `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
